@@ -316,6 +316,26 @@ pre{
 .ov-card h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px}
 .ov-card p{font-size:12px;color:var(--gray-m);line-height:1.7}
 
+/* ── Back to top ── */
+.back-to-top{display:flex;justify-content:center;margin-top:40px;padding-top:24px;border-top:1px solid var(--gray-b)}
+.back-to-top button{
+  background:var(--navy);color:#fff;border:none;border-radius:24px;
+  padding:10px 28px;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;gap:8px;
+  transition:background .2s,transform .15s;
+  box-shadow:0 3px 12px rgba(26,58,107,.25);
+}
+.back-to-top button:hover{background:var(--navy-m);transform:translateY(-2px)}
+
+/* ── Tab scroll fade ── */
+.tab-fade{
+  position:absolute;right:0;top:0;bottom:0;width:40px;
+  background:linear-gradient(to right,transparent,rgba(255,255,255,.96));
+  pointer-events:none;display:flex;align-items:center;justify-content:flex-end;
+  padding-right:6px;font-size:18px;color:var(--gray-m);
+}
+.tab-wrap{position:relative}
+
 /* ── Responsive ── */
 @media(max-width:600px){
   .site-header{padding:28px 16px 0}
@@ -357,24 +377,25 @@ pre{
       <span class="tab-num">0</span>全体像
     </button>
     <button class="tab-btn" data-tab="1" role="tab">
-      <span class="tab-num">1</span>フォーム作成
+      <span class="tab-num">1</span>フォーム
     </button>
     <button class="tab-btn" data-tab="2" role="tab">
-      <span class="tab-num">2</span>スプレッドシート
+      <span class="tab-num">2</span>シート
     </button>
     <button class="tab-btn" data-tab="3" role="tab">
       <span class="tab-num">3</span>GASコード
     </button>
     <button class="tab-btn" data-tab="4" role="tab">
-      <span class="tab-num">4</span>日程確定・お手紙
+      <span class="tab-num">4</span>日程確定
     </button>
     <button class="tab-btn" data-tab="5" role="tab">
-      <span class="tab-num">5</span>PDF一括生成
+      <span class="tab-num">5</span>PDF生成
     </button>
     <button class="tab-btn" data-tab="6" role="tab">
       <span class="tab-num">6</span>FAQ
     </button>
   </nav>
+  <div class="tab-fade">›</div>
 </div>
 
 <!-- ══ CONTENT ══════════════════════════════════════ -->
@@ -389,42 +410,104 @@ pre{
   </div>
 
   <div class="card navy">
-    <div class="card-ttl">📌 このマニュアルの目的</div>
-    <p>個人懇談の日程調整は、保護者ごとの都合・兄弟関係・担任の判断が絡むため、全自動化には馴染みません。このツールは <strong>「集計・見える化だけ自動化し、最終判断は先生が行う」</strong> 設計です。GASの経験がなくても、コードをコピー＆ペーストするだけで動作します。</p>
+    <div class="card-ttl">📌 このシステムの設計思想</div>
+    <p>個人懇談の日程調整は、保護者の都合・兄弟関係・担任の経験的判断が複雑に絡み合うため、<strong>完全自動化には馴染みません</strong>。このツールは「集計・見える化・文面生成だけ自動化し、最終判断は先生が行う」設計です。GASの経験がなくても、コードをコピー＆ペーストするだけで動作します。</p>
+  </div>
+
+  <div class="sec-title">
+    <div class="sec-num">👥</div>
+    <h2>登場人物と役割分担</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>担当者</th><th>タイミング</th><th>作業内容</th><th>使うメニュー</th></tr>
+      <tr>
+        <td><strong>教務主任</strong></td>
+        <td>年度はじめ（1回）</td>
+        <td>クラス名簿設定シートに全クラスの定員人数を入力する</td>
+        <td>—（手動入力）</td>
+      </tr>
+      <tr>
+        <td><strong>教務主任</strong></td>
+        <td>フォーム作成時</td>
+        <td>Googleフォームを作成・配布・締切管理する</td>
+        <td>—（Googleフォーム操作）</td>
+      </tr>
+      <tr>
+        <td><strong>教務主任</strong></td>
+        <td>締切後・随時</td>
+        <td>未提出者一覧を生成して全校の提出状況を把握し、各担任に共有する</td>
+        <td>⑤ 未提出者一覧を生成</td>
+      </tr>
+      <tr>
+        <td><strong>各担任</strong></td>
+        <td>締切後</td>
+        <td>自クラスのカレンダーを生成し、重複・兄弟申告を確認しながら日程を確定する</td>
+        <td>① カレンダー生成　② 重複チェック　③ 未確定確認</td>
+      </tr>
+      <tr>
+        <td><strong>各担任</strong></td>
+        <td>確定後</td>
+        <td>確定済み一覧に日程を入力し、お手紙PDFを生成して保護者に配布する</td>
+        <td>④ PDF一括生成</td>
+      </tr>
+      <tr>
+        <td><strong>各担任</strong></td>
+        <td>確定後</td>
+        <td>兄弟クラスの担任に申し送り文面を送る（チャット1対1）</td>
+        <td>⑥ 申し送り文面を生成</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="sec-title">
+    <div class="sec-num">→</div>
+    <h2>全体の流れ</h2>
   </div>
 
   <div class="flow">
-    <div class="flow-item">① 保護者がフォームに希望入力</div>
+    <div class="flow-item">教務主任<br>フォーム作成・配布</div>
     <div class="flow-arr">→</div>
-    <div class="flow-item">② スプレッドシートに自動蓄積</div>
+    <div class="flow-item">保護者<br>希望日程・兄弟情報入力</div>
     <div class="flow-arr">→</div>
-    <div class="flow-item">③ GASでカレンダー自動生成</div>
+    <div class="flow-item">教務主任<br>未提出者を全校把握</div>
     <div class="flow-arr">→</div>
-    <div class="flow-item">④ 先生が確定・調整</div>
+    <div class="flow-item">各担任<br>カレンダー生成・日程確定</div>
     <div class="flow-arr">→</div>
-    <div class="flow-item">⑤ お手紙印刷・配布</div>
+    <div class="flow-item">各担任<br>お手紙配布＋兄弟申し送り</div>
+  </div>
+
+  <div class="card orange" style="margin-top:8px">
+    <div class="card-ttl">👨‍👩‍👧 兄弟対応について（最大4人まで）</div>
+    <ul>
+      <li>保護者はフォームのチェックボックスで兄弟が在籍する<strong>全クラスを複数選択</strong>できます（最大4人兄弟まで対応）</li>
+      <li>カレンダーでは兄弟申告のある保護者のコマに<strong>紫枠と👨‍👩‍👧マーク</strong>が付きます。兄弟が複数の場合は全クラスが表示されます</li>
+      <li>確定後に⑥を実行すると、<strong>宛先クラス別にチャット用の申し送り文面</strong>がまとめて生成されます。兄弟が3クラス以上にまたがる場合も全クラス分の文面が自動生成されます</li>
+      <li>未提出者一覧では、他クラスから兄弟申告のあるクラスが<strong>紫文字</strong>でフラグ表示されます</li>
+    </ul>
   </div>
 
   <div class="overview-grid">
     <div class="ov-card">
       <div class="ov-icon">📋</div>
       <h3>STEP 1　フォーム作成</h3>
-      <p>Googleフォームで保護者が第一〜第三希望を選べるアンケートを作成します。プルダウン形式なので入力ミスが起きません。</p>
+      <p>教務主任が全校共通フォームを作成・配布。希望日程・在籍クラス・兄弟クラス（複数選択可）を収集します。</p>
     </div>
     <div class="ov-card">
       <div class="ov-icon">📊</div>
-      <h3>STEP 2　スプレッドシート連携</h3>
-      <p>フォームの回答を自動収集。3つのシート（フォーム回答・カレンダー・確定一覧）を準備します。</p>
+      <h3>STEP 2　スプレッドシート</h3>
+      <p>回答を自動収集。教務主任が定員人数を事前入力。6シート構成で教務主任・担任がそれぞれ参照します。</p>
     </div>
     <div class="ov-card">
       <div class="ov-icon">⚡</div>
-      <h3>STEP 3　GAS自動生成</h3>
-      <p>コードを貼り付けてボタン一発。希望が重なっているコマを赤くハイライトした調整カレンダーが自動で作られます。</p>
+      <h3>STEP 3　GAS設定</h3>
+      <p>コードをコピペして1回設定するだけ。6つのメニューで教務主任用・担任用の機能を使い分けます。</p>
     </div>
     <div class="ov-card">
       <div class="ov-icon">📄</div>
-      <h3>STEP 4　確定・お手紙</h3>
-      <p>先生が確定日程を記入。Googleドキュメントのテンプレートからお手紙を印刷して保護者へ配布します。</p>
+      <h3>STEP 4〜5　確定・配布</h3>
+      <p>担任が日程を確定し、お手紙を印刷配布。兄弟クラスの担任にはチャットで申し送りを行います。</p>
     </div>
   </div>
 
@@ -435,9 +518,9 @@ pre{
   <div class="tbl-wrap">
     <table>
       <tr><th>ツール</th><th>費用</th><th>備考</th></tr>
-      <tr><td>Googleアカウント</td><td>無料</td><td>学校のGoogleアカウント（Google Workspace）があればそちらを推奨</td></tr>
-      <tr><td>Googleフォーム</td><td>無料</td><td>Googleアカウントがあれば即日使用可能</td></tr>
-      <tr><td>Googleスプレッドシート</td><td>無料</td><td>フォームと自動連携する</td></tr>
+      <tr><td>Googleアカウント</td><td>無料</td><td>学校のGoogle Workspace推奨。教務主任・担任全員が同じドライブを参照できると便利</td></tr>
+      <tr><td>Googleフォーム</td><td>無料</td><td>教務主任が作成・管理</td></tr>
+      <tr><td>Googleスプレッドシート</td><td>無料</td><td>フォームと自動連携。教務主任・全担任と共有して使用</td></tr>
       <tr><td>Google Apps Script（GAS）</td><td>無料</td><td>スプレッドシートから起動。コードはコピペのみ</td></tr>
       <tr><td>Googleドキュメント</td><td>無料</td><td>お手紙テンプレート作成用</td></tr>
     </table>
@@ -445,9 +528,10 @@ pre{
 
   <div class="notice blue-n">
     <div class="notice-icon">💡</div>
-    <div>タブを順番に読み進めると、フォーム作成からお手紙印刷まで一通り設定できます。各タブは独立して参照可能です。</div>
+    <div>タブを順番に読み進めると、フォーム作成からお手紙印刷・申し送りまで一通り設定できます。<br>教務主任はSTEP1〜2・⑤、担任はSTEP3〜4・①〜④⑥が主な担当です。</div>
   </div>
 
+<div class="back-to-top"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 先頭に戻る</button></div>
 </div><!-- /tab-0 -->
 
 
@@ -461,7 +545,23 @@ pre{
 
   <div class="card teal">
     <div class="card-ttl">🎯 このSTEPのゴール</div>
-    <p>保護者が第一〜第三希望の日時を選べるフォームを完成させ、配布用リンクを取得します。</p>
+    <p>保護者が「来られない日時」だけを入力するフォームを完成させ、全校に配布します。いつでも可能な保護者は「特になし」を選ぶだけで送信完了。担任は候補枠が少ない保護者から優先的に日程を確定できます。</p>
+  </div>
+
+  <div class="card navy" style="margin-bottom:16px">
+    <div class="card-ttl">📋 追加する質問の一覧（全6問）</div>
+    <div class="tbl-wrap" style="margin:8px 0 0">
+      <table>
+        <tr><th>質問番号</th><th>質問内容</th><th>形式</th><th>必須</th></tr>
+        <tr><td>①</td><td>保護者のお名前</td><td>記述式（短文）</td><td>必須</td></tr>
+        <tr><td>②</td><td>お子様のお名前</td><td>記述式（短文）</td><td>必須</td></tr>
+        <tr><td>③</td><td>お子様の在籍クラス</td><td>プルダウン（1年1組〜6年3組）</td><td>必須</td></tr>
+        <tr><td>④</td><td>来られない日時にチェックしてください（複数選択可）</td><td>チェックボックス（全24スロット＋「特になし（いつでも可）」）</td><td>必須</td></tr>
+        <tr><td>⑤</td><td>留意点があればご記入ください</td><td>記述式（長文）</td><td>任意</td></tr>
+        <tr><td>⑥</td><td>兄弟が在籍するクラスをすべて選んでください</td><td>チェックボックス（全クラス＋「兄弟はいない」）</td><td>必須</td></tr>
+      </table>
+    </div>
+    <p style="margin-top:10px;font-size:12px;">⚠️ ③のクラスは未提出者集計に、④の不可日はカレンダーの候補枠数計算に、⑥の兄弟情報は申し送り文面の生成に使われます。GASコードの列番号設定と必ず一致させてください。</p>
   </div>
 
   <div class="steps">
@@ -470,90 +570,107 @@ pre{
       <div class="step-body">
         <h3>Googleドライブを開き、フォームを新規作成する</h3>
         <p><a href="https://drive.google.com" target="_blank" style="color:var(--navy)">drive.google.com</a> にアクセスし、左上の <code>＋ 新規</code> → <code>Googleフォーム</code> をクリックします。</p>
-        <div class="step-note tip">学校のGoogle Workspaceアカウントでログインしておくと、フォームの共有が校内に限定できて安全です。</div>
+        <div class="step-note tip">学校のGoogle Workspaceアカウントでログインしておくと、フォームの共有が校内に限定できて安全です。作成者は教務主任が担当します。</div>
       </div>
     </div>
 
     <div class="step">
       <div class="step-n">2</div>
       <div class="step-body">
-        <h3>フォームのタイトルと説明を入力する</h3>
-        <p>タイトル欄に <code>個人懇談 希望日程アンケート</code> と入力します。説明欄には以下のような文章を入力してください。</p>
-        <div class="step-note">
-          例）「保護者の皆様、個人懇談の希望日程をご記入ください。ご都合の良い日時を第一〜第三希望の順にお選びください。万が一ご希望に添えない場合は担任よりご連絡します。」
-        </div>
+        <h3>タイトルと説明を入力する</h3>
+        <p>タイトル欄に <code>個人懇談 日程アンケート</code> と入力します。説明欄には以下のような文章を入力してください。</p>
+        <div class="step-note">例）「個人懇談の日程調整にご協力ください。来られない日時にチェックを入れてください。いつでも都合がつく場合は「特になし（いつでも可）」を選んで送信してください。締切：〇月〇日（〇）」</div>
       </div>
     </div>
 
     <div class="step">
       <div class="step-n">3</div>
       <div class="step-body">
-        <h3>質問①「保護者名」を追加する</h3>
-        <p>＋ボタンで質問を追加し、種類を <code>記述式（短文）</code> に設定します。「必須」をオンにしてください。</p>
-        <div class="step-note">質問文の例：「保護者のお名前（例：山田 花子）」</div>
+        <h3>質問①②「保護者名・お子様の名前」を追加する</h3>
+        <p>＋ボタンで質問を追加し、種類を <code>記述式（短文）</code> に設定します。どちらも「必須」をオンにしてください。</p>
+        <div class="step-note">質問①例：「保護者のお名前（例：山田 花子）」<br>質問②例：「お子様のお名前（例：山田 太郎）」</div>
       </div>
     </div>
 
     <div class="step">
       <div class="step-n">4</div>
       <div class="step-body">
-        <h3>質問②「お子様の名前」を追加する</h3>
-        <p>同様に <code>記述式</code> で追加します。「必須」をオンにしてください。</p>
-        <div class="step-note">質問文の例：「お子様のお名前（例：山田 太郎）」</div>
+        <h3>質問③「在籍クラス」をプルダウンで追加する</h3>
+        <p>種類を <code>プルダウン</code> に設定し、選択肢に全クラスを入力します。「必須」をオンにしてください。</p>
+        <div class="step-note">
+          選択肢（全18クラス）：<br>
+          1年1組 / 1年2組 / 1年3組 / 2年1組 / 2年2組 / 2年3組<br>
+          3年1組 / 3年2組 / 3年3組 / 4年1組 / 4年2組 / 4年3組<br>
+          5年1組 / 5年2組 / 5年3組 / 6年1組 / 6年2組 / 6年3組
+        </div>
+        <div class="step-note warn">⚠️ GASコードの <code>CLASSES</code> 定数と完全一致させてください。</div>
       </div>
     </div>
 
     <div class="step">
       <div class="step-n">5</div>
       <div class="step-body">
-        <h3>質問③〜⑤「第一〜第三希望」をプルダウンで追加する</h3>
-        <p>種類を <code>プルダウン</code> に設定し、選択肢に下の形式で日時を入力します。<strong>この文字列はGASコードと完全に一致させる必要があります。</strong></p>
-        <div class="step-note warn">
-          ⚠️ 選択肢の書き方は統一してください。例：<code>10/15(火) 14:00〜</code><br>
-          全角・半角、スペースの有無など、あとでGASコードにそのままコピーします。
+        <h3>質問④「来られない日時」をチェックボックスで追加する</h3>
+        <p>種類を <code>チェックボックス（複数選択）</code> に設定します。全24スロット＋「特になし（いつでも可）」を選択肢として入力してください。「必須」をオンにします。</p>
+        <div class="step-note">
+          選択肢（全25項目）：<br>
+          □ 10/15(火) 14:00〜14:15　□ 10/15(火) 14:15〜14:30　□ 10/15(火) 14:30〜14:45<br>
+          □ 10/15(火) 14:45〜15:00　□ 10/15(火) 15:00〜15:15　□ 10/15(火) 15:15〜15:30<br>
+          □ 10/16(水) 14:00〜14:15　… （同様に10/16・10/17・10/18分も追加）<br>
+          □ <strong>特になし（いつでも可）</strong>
         </div>
-        <div class="step-note" style="margin-top:8px">
-          選択肢の例：<br>
-          10/15(火) 14:00〜<br>
-          10/15(火) 14:15〜<br>
-          10/15(火) 14:30〜<br>
-          10/16(水) 14:00〜<br>
-          ……（全日程分）
-        </div>
+        <div class="step-note warn">⚠️ 各スロットの文字列はGASコードの <code>DATES</code>・<code>TIMES</code> 定数と完全一致させてください。「特になし（いつでも可）」は <code>NG_NONE</code> 定数と一致させてください。</div>
+        <div class="step-note tip">💡 「特になし（いつでも可）」を選ぶと全スロットが候補になります。いつでも都合がつく保護者はこれだけ選べば送信完了です。</div>
       </div>
     </div>
 
     <div class="step">
       <div class="step-n">6</div>
       <div class="step-body">
-        <h3>質問⑥「備考」を任意で追加する（省略可）</h3>
-        <p>兄弟がいる・仕事の都合など保護者が一言添えられる欄を設けると調整がスムーズです。種類は <code>記述式（長文）</code>、「必須」はオフに設定します。</p>
+        <h3>質問⑤「留意点」を追加する（省略可）</h3>
+        <p>種類は <code>記述式（長文）</code>、「必須」はオフに設定します。「兄弟の懇談と近い時間帯を希望」「仕事の都合で15時以降を希望」などを自由に記入してもらう欄です。</p>
+        <div class="step-note tip">💡 カレンダーでは留意点がある保護者に ★ マークが付きます。内容は別途「留意点」列に表示されます。</div>
       </div>
     </div>
 
     <div class="step">
       <div class="step-n">7</div>
       <div class="step-body">
-        <h3>回答を1回に制限する（推奨）</h3>
-        <p>右上の ⚙️ 設定アイコン → <code>回答</code> タブ → <strong>「1回の回答に制限する」</strong> をオンにします。</p>
-        <div class="step-note tip">これでGoogleアカウントでログインした人しか回答できなくなります。学校のアカウントがある場合は合わせて「〇〇小学校のユーザーのみに制限」も設定できます。</div>
+        <h3>質問⑥「兄弟クラス」をチェックボックスで追加する</h3>
+        <p>種類を <code>チェックボックス（複数選択）</code> に設定します。全クラス＋「兄弟はいない」を選択肢として入力してください。「必須」をオンにします。</p>
+        <div class="step-note">
+          選択肢（全19項目）：<br>
+          □ 1年1組〜6年3組（全18クラス）　□ <strong>兄弟はいない</strong>
+        </div>
+        <div class="step-note warn">⚠️ 「兄弟はいない」はGASコードの <code>SIB_NONE</code> 定数と完全一致させてください。最大4人兄弟まで対応（複数チェック可）。</div>
       </div>
     </div>
 
     <div class="step">
       <div class="step-n">8</div>
       <div class="step-body">
-        <h3>フォームのリンクを保護者に配布する</h3>
-        <p>右上の <code>送信</code> ボタン → 🔗 リンクアイコンを選択 → <strong>URLを短縮</strong> にチェック → コピーして保護者に配布します（メール・学校連絡アプリなど）。</p>
+        <h3>回答を1回に制限し、締切を設定する</h3>
+        <p>右上の ⚙️ 設定アイコン → <code>回答</code> タブ → <strong>「1回の回答に制限する」</strong> をオンにします。締切日はフォームの説明文に明記し、期限後は「回答を受け付けています」をオフにします。</p>
+        <div class="step-note tip">締切後も遅れる保護者がいます。「② 未提出者一覧を生成」で定期的に確認し、個別対応しましょう。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">9</div>
+      <div class="step-body">
+        <h3>フォームのリンクを全校保護者に配布する</h3>
+        <p>右上の <code>送信</code> ボタン → 🔗 リンクアイコン → <strong>URLを短縮</strong> にチェック → コピーして保護者に配布します（メール・学校連絡アプリなど）。</p>
+        <div class="step-note tip">配布は教務主任が行います。URLは全クラス共通で構いません。回答に「在籍クラス」を含めているためクラスごとに分ける必要はありません。</div>
       </div>
     </div>
   </div>
 
   <div class="notice green-n" style="margin-top:24px">
     <div class="notice-icon">✅</div>
-    <div><strong>確認ポイント：</strong>自分でテスト送信して、回答がスプレッドシートに届くか確認してから保護者に配布しましょう。テスト回答は後で削除できます。</div>
+    <div><strong>確認ポイント：</strong>自分でテスト送信して、①「特になし」選択時・②複数の不可日選択時・③兄弟複数選択時の3パターンで回答がスプレッドシートに正しく届くか確認してから配布しましょう。テスト回答は後で削除できます。</div>
   </div>
 
+<div class="back-to-top"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 先頭に戻る</button></div>
 </div><!-- /tab-1 -->
 
 
@@ -601,7 +718,23 @@ pre{
     <div class="step">
       <div class="step-n">4</div>
       <div class="step-body">
-        <h3>「確定済み一覧」シートを追加する</h3>
+        <h3>「クラス名簿設定」シートを追加する【教務主任が年度はじめに設定】</h3>
+        <p><code>＋</code> ボタンでシートを追加し、タブ名を <strong>「クラス名簿設定」</strong> に変更します。A列にクラス名、B列に定員人数（児童数）を入力します。</p>
+        <div class="step-note">
+          入力例：<br>
+          A1：1年1組　B1：28<br>
+          A2：1年2組　B2：27<br>
+          A3：1年3組　B3：29<br>
+          … （全18クラス分）
+        </div>
+        <div class="step-note tip">💡 これが⑤「未提出者一覧を生成」の基準データになります。年度はじめに教務主任が入力し、クラス編成が変わった年度のみ更新してください。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">5</div>
+      <div class="step-body">
+        <h3>「確定済み一覧」シートを追加する【担任が使用】</h3>
         <p>同様に <code>＋</code> ボタンでシートを追加し、タブ名を <strong>「確定済み一覧」</strong> に変更します。</p>
         <div class="step-note">以下のヘッダーを1行目に手入力しておきます：<br>
         A1：No. ／ B1：保護者名 ／ C1：お子様の名前 ／ D1：確定日時 ／ E1：希望順位 ／ F1：お手紙 ／ G1：備考</div>
@@ -609,16 +742,21 @@ pre{
     </div>
 
     <div class="step">
-      <div class="step-n">5</div>
+      <div class="step-n">6</div>
       <div class="step-body">
         <h3>フォーム回答シートの列番号を確認する</h3>
-        <p>フォーム回答シートを開き、各列が何番目か確認します（A列＝1、B列＝2…）。GASコードに入力するために必要です。</p>
+        <p>フォーム回答シートを開き、各列が何番目か確認します（A列＝1、B列＝2…）。GASコードの列番号設定と一致させる必要があります。</p>
         <div class="step-note">
-          一般的な列構成例：<br>
-          A列（1）：タイムスタンプ ／ B列（2）：保護者名 ／ C列（3）：お子様の名前<br>
-          D列（4）：第一希望 ／ E列（5）：第二希望 ／ F列（6）：第三希望 ／ G列（7）：備考<br>
-          ※ フォームで質問を追加した順に列が作られます。
+          フォーム質問①〜⑥の順に列が作られます（A列はタイムスタンプ）：<br>
+          A列（1）：タイムスタンプ<br>
+          B列（2）：①保護者名　← <code>COL_PARENT = 2</code><br>
+          C列（3）：②お子様の名前　← <code>COL_CHILD = 3</code><br>
+          D列（4）：③在籍クラス　← <code>COL_CLASS = 4</code><br>
+          E列（5）：④来られない日時（チェックボックス・カンマ区切り）　← <code>COL_NG = 5</code><br>
+          F列（6）：⑤留意点　← <code>COL_NOTE = 6</code><br>
+          G列（7）：⑥兄弟クラス（チェックボックス・カンマ区切り）　← <code>COL_SIB = 7</code>
         </div>
+        <div class="step-note warn">⚠️ チェックボックスで複数選択した場合、スプレッドシートには「10/15(火) 14:00〜14:15, 10/16(水) 15:00〜15:15」のようにカンマ区切りで記録されます。GASの<code>parseChecks</code>関数が自動で分割して処理します。</div>
       </div>
     </div>
   </div>
@@ -631,11 +769,15 @@ pre{
     <table>
       <tr><th>シート名（タブ名）</th><th>役割</th><th>誰が編集するか</th></tr>
       <tr><td><code>フォーム回答</code></td><td>保護者のフォーム回答が自動蓄積</td><td>自動（触らない）</td></tr>
-      <tr><td><code>カレンダー調整表</code></td><td>日程×時間帯のカレンダー形式。GASが自動生成</td><td>GASが自動生成、先生が調整</td></tr>
-      <tr><td><code>確定済み一覧</code></td><td>先生が確定日程を入力。お手紙作成に使用</td><td>先生が手入力</td></tr>
+      <tr><td><code>クラス名簿設定</code></td><td>全クラスの定員人数を事前入力。未提出者集計に使用</td><td>教務主任が年度はじめに入力</td></tr>
+      <tr><td><code>1年1組〜6年3組</code>（18タブ）</td><td>保護者1名1行・不可日に✕・候補枠数で色分け・チェックで確定</td><td>GASが一括生成、担任がチェックして確定</td></tr>
+      <tr><td><code>確定済み一覧</code></td><td>担任がチェックした瞬間に自動転記。お手紙作成に使用</td><td>自動転記（担任が参照）</td></tr>
+      <tr><td><code>未提出者一覧</code></td><td>クラス別の提出状況と兄弟申告を自動集計</td><td>自動生成（教務主任・担任が参照）</td></tr>
+      <tr><td><code>申し送り文面</code></td><td>兄弟クラスの担任へのチャット用文面を自動生成</td><td>自動生成（担任がコピペして使用）</td></tr>
     </table>
   </div>
 
+<div class="back-to-top"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 先頭に戻る</button></div>
 </div><!-- /tab-2 -->
 
 
@@ -685,9 +827,26 @@ pre{
     <h2>コードを貼り付ける（★の箇所だけ変更）</h2>
   </div>
 
+  <div class="card teal" style="margin-bottom:12px">
+    <div class="card-ttl">💡 このコード（統合スクリプト v2）でできること</div>
+    <ul>
+      <li>フォーム回答を読み取り、カレンダーを自動生成。◎○△を自動付与</li>
+      <li>兄弟申告ありのコマは <strong>紫枠＋👨‍👩‍👧マーク</strong> で表示（連続コマ検討の目安に）</li>
+      <li>重複コマは赤、兄弟＋重複は両方同時に警告</li>
+      <li>クラス名簿設定と照合して <strong>クラス別未提出者一覧</strong> を自動生成</li>
+      <li>確定後、兄弟クラスの担任へのチャット用 <strong>申し送り文面</strong> を一括生成</li>
+      <li>メニュー「📋 懇談ツール」に①〜⑥の6機能を追加</li>
+    </ul>
+  </div>
+
   <div class="notice" style="margin-bottom:12px">
     <div class="notice-icon">⚠️</div>
     <div><strong>フォームの選択肢文字列を DATES・TIME_SLOTS にそのままコピーしてください。</strong>一字でも違うとカレンダーに反映されません。</div>
+  </div>
+
+  <div class="notice green-n" style="margin-bottom:12px">
+    <div class="notice-icon">♻️</div>
+    <div><strong>毎年度のクラス数変更について：</strong>コード内の <code>CLASSES</code> 定数部分を、Claude等の生成AIに「CLASSESを〇年〇組まで変更して」と依頼し、修正済みコードをGASに貼り直してください。それ以外の設定（DATESやTIME_SLOTS）も同様に生成AIへの依頼で変更できます。</div>
   </div>
 
   <div class="code-wrap">
@@ -697,200 +856,551 @@ pre{
       <button class="copy-btn" onclick="copyGAS(this)">📋 全文コピー</button>
     </div>
 <pre id="gas-code"><code><span class="cm">// ══════════════════════════════════════════════
-//  個人懇談 カレンダー自動生成スクリプト
+//  個人懇談 統合スクリプト v4
 //  作成：後藤 壮史（大阪大谷大学 教育学部）
-//  作成：後藤 壮史（大阪大谷大学 教育学部）
+//  方式：不可日入力＋候補枠数による優先度表示
+//  カレンダー：全クラス一括生成（教務主任が実行）
+//  確定操作：チェックボックス→取消線＋自動転記
 // ══════════════════════════════════════════════</span>
 
 <span class="cm">// ──────────────────────────────────────────────
-//  ★ ここだけ変更してください ★
+//  ★ 毎年度ここを確認・変更してください ★
 // ──────────────────────────────────────────────</span>
-<span class="kw">const</span> <span class="var">SHEET_FORM</span>  <span class="op">=</span> <span class="str">'フォーム回答'</span>;      <span class="cm">// フォーム回答シートのタブ名</span>
-<span class="kw">const</span> <span class="var">SHEET_CAL</span>   <span class="op">=</span> <span class="str">'カレンダー調整表'</span>;   <span class="cm">// カレンダー調整表シートのタブ名</span>
-<span class="kw">const</span> <span class="var">SHEET_KAKUTEI</span><span class="op">=</span> <span class="str">'確定済み一覧'</span>;      <span class="cm">// 確定済み一覧シートのタブ名</span>
 
-<span class="kw">const</span> <span class="var">COL_PARENT</span> <span class="op">=</span> <span class="num">2</span>;  <span class="cm">// 保護者名  が何列目か（A=1, B=2…）</span>
-<span class="kw">const</span> <span class="var">COL_CHILD</span>  <span class="op">=</span> <span class="num">3</span>;  <span class="cm">// お子様名  が何列目か</span>
-<span class="kw">const</span> <span class="var">COL_WISH1</span>  <span class="op">=</span> <span class="num">4</span>;  <span class="cm">// 第一希望  が何列目か</span>
-<span class="kw">const</span> <span class="var">COL_WISH2</span>  <span class="op">=</span> <span class="num">5</span>;  <span class="cm">// 第二希望  が何列目か</span>
-<span class="kw">const</span> <span class="var">COL_WISH3</span>  <span class="op">=</span> <span class="num">6</span>;  <span class="cm">// 第三希望  が何列目か</span>
+<span class="cm">// シート名</span>
+<span class="kw">const</span> <span class="var">SHEET_FORM</span>    <span class="op">=</span> <span class="str">'フォーム回答'</span>;
+<span class="kw">const</span> <span class="var">SHEET_KAKUTEI</span> <span class="op">=</span> <span class="str">'確定済み一覧'</span>;
+<span class="kw">const</span> <span class="var">SHEET_ROSTER</span>  <span class="op">=</span> <span class="str">'クラス名簿設定'</span>;
+<span class="kw">const</span> <span class="var">SHEET_UNSUB</span>   <span class="op">=</span> <span class="str">'未提出者一覧'</span>;
+<span class="kw">const</span> <span class="var">SHEET_SIBLING</span> <span class="op">=</span> <span class="str">'申し送り文面'</span>;
 
-<span class="cm">// 懇談の日程（フォームのプルダウン選択肢と完全一致させること）</span>
+<span class="cm">// フォーム回答の列番号（A=1）</span>
+<span class="kw">const</span> <span class="var">COL_PARENT</span>  <span class="op">=</span> <span class="num">2</span>;  <span class="cm">// 保護者名</span>
+<span class="kw">const</span> <span class="var">COL_CHILD</span>   <span class="op">=</span> <span class="num">3</span>;  <span class="cm">// 児童名</span>
+<span class="kw">const</span> <span class="var">COL_CLASS</span>   <span class="op">=</span> <span class="num">4</span>;  <span class="cm">// 在籍クラス</span>
+<span class="kw">const</span> <span class="var">COL_NG</span>      <span class="op">=</span> <span class="num">5</span>;  <span class="cm">// 来られない日時（チェックボックス・カンマ区切り）</span>
+<span class="kw">const</span> <span class="var">COL_NOTE</span>    <span class="op">=</span> <span class="num">6</span>;  <span class="cm">// 留意点</span>
+<span class="kw">const</span> <span class="var">COL_SIB</span>     <span class="op">=</span> <span class="num">7</span>;  <span class="cm">// 兄弟クラス（チェックボックス・カンマ区切り）</span>
+
+<span class="cm">// 懇談の日程・時間帯（フォームの選択肢と完全一致させること）</span>
 <span class="kw">const</span> <span class="var">DATES</span> <span class="op">=</span> [
-  <span class="str">'10/15(火)'</span>,
-  <span class="str">'10/16(水)'</span>,
-  <span class="str">'10/17(木)'</span>,
-  <span class="str">'10/18(金)'</span>,
+  <span class="str">'10/15(火)'</span>, <span class="str">'10/16(水)'</span>, <span class="str">'10/17(木)'</span>, <span class="str">'10/18(金)'</span>,
+];
+<span class="kw">const</span> <span class="var">TIMES</span> <span class="op">=</span> [
+  <span class="str">'14:00〜14:15'</span>, <span class="str">'14:15〜14:30'</span>, <span class="str">'14:30〜14:45'</span>,
+  <span class="str">'14:45〜15:00'</span>, <span class="str">'15:00〜15:15'</span>, <span class="str">'15:15〜15:30'</span>,
+];
+<span class="kw">const</span> <span class="var">ALL_SLOTS</span> <span class="op">=</span> <span class="var">DATES</span>.<span class="fn">flatMap</span>(<span class="var">d</span> <span class="op">=></span> <span class="var">TIMES</span>.<span class="fn">map</span>(<span class="var">t</span> <span class="op">=></span> <span class="var">d</span><span class="op">+</span><span class="str">' '</span><span class="op">+</span><span class="var">t</span>));  <span class="cm">// 24スロット</span>
+
+<span class="cm">// フォームで「特になし（いつでも可）」を表す文字列</span>
+<span class="kw">const</span> <span class="var">NG_NONE</span> <span class="op">=</span> <span class="str">'特になし（いつでも可）'</span>;
+
+<span class="cm">// ★ 全校クラス一覧（クラス数が変わる年度は生成AIに修正を依頼してください）</span>
+<span class="kw">const</span> <span class="var">CLASSES</span> <span class="op">=</span> [
+  <span class="str">'1年1組'</span>,<span class="str">'1年2組'</span>,<span class="str">'1年3組'</span>,
+  <span class="str">'2年1組'</span>,<span class="str">'2年2組'</span>,<span class="str">'2年3組'</span>,
+  <span class="str">'3年1組'</span>,<span class="str">'3年2組'</span>,<span class="str">'3年3組'</span>,
+  <span class="str">'4年1組'</span>,<span class="str">'4年2組'</span>,<span class="str">'4年3組'</span>,
+  <span class="str">'5年1組'</span>,<span class="str">'5年2組'</span>,<span class="str">'5年3組'</span>,
+  <span class="str">'6年1組'</span>,<span class="str">'6年2組'</span>,<span class="str">'6年3組'</span>,
 ];
 
-<span class="cm">// 懇談の時間帯（フォームのプルダウン選択肢と完全一致させること）</span>
-<span class="kw">const</span> <span class="var">TIME_SLOTS</span> <span class="op">=</span> [
-  <span class="str">'14:00〜14:15'</span>,
-  <span class="str">'14:15〜14:30'</span>,
-  <span class="str">'14:30〜14:45'</span>,
-  <span class="str">'14:45〜15:00'</span>,
-  <span class="str">'15:00〜15:15'</span>,
-  <span class="str">'15:15〜15:30'</span>,
-];
+<span class="cm">// 「兄弟はいない」を表す文字列（フォームの選択肢と一致させること）</span>
+<span class="kw">const</span> <span class="var">SIB_NONE</span> <span class="op">=</span> <span class="str">'兄弟はいない'</span>;
+
+<span class="cm">// カレンダーの候補枠数による色分けルール
+//  残り1枠    → 赤（最優先）
+//  残り2〜3枠 → 橙
+//  残り4〜6枠 → 黄
+//  残り7枠以上 → 白（いつでも可含む）</span>
+<span class="kw">const</span> <span class="var">COLOR</span> <span class="op">=</span> {
+  RED:       <span class="str">'#FDECEA'</span>, RED_TXT:    <span class="str">'#C0392B'</span>,
+  ORANGE:    <span class="str">'#FFF0E0'</span>, ORANGE_TXT: <span class="str">'#E07B00'</span>,
+  YELLOW:    <span class="str">'#FFFDE7'</span>, YELLOW_TXT: <span class="str">'#B7860B'</span>,
+  WHITE:     <span class="str">'#FFFFFF'</span>, GRAY_TXT:   <span class="str">'#4A4A4A'</span>,
+  NAVY:      <span class="str">'#1A3A6B'</span>, NAVY_L:     <span class="str">'#EBF0FA'</span>,
+  PURPLE:    <span class="str">'#6B3FA0'</span>, PURPLE_L:   <span class="str">'#F3EEFF'</span>,
+  GREEN:     <span class="str">'#276221'</span>, GREEN_L:    <span class="str">'#EBF5E9'</span>,
+  GRAY_L:    <span class="str">'#F5F5F5'</span>, GRAY_B:     <span class="str">'#CCCCCC'</span>,
+  DONE_BG:   <span class="str">'#F0F0F0'</span>, DONE_TXT:   <span class="str">'#AAAAAA'</span>,
+};
 
 <span class="cm">// ──────────────────────────────────────────────
 //  以下は変更不要です
 // ──────────────────────────────────────────────</span>
 
-<span class="cm">/** スプレッドシートを開いたときにメニューを追加 */</span>
+<span class="cm">/** メニューを追加 */</span>
 <span class="kw">function</span> <span class="fn">onOpen</span>() {
   <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>()
     .<span class="fn">createMenu</span>(<span class="str">'📋 懇談ツール'</span>)
-    .<span class="fn">addItem</span>(<span class="str">'① カレンダーを自動生成・更新'</span>, <span class="str">'buildCalendar'</span>)
+    .<span class="fn">addItem</span>(<span class="str">'① 全クラスカレンダーを一括生成【教務主任】'</span>, <span class="str">'buildAllCalendars'</span>)
     .<span class="fn">addSeparator</span>()
-    .<span class="fn">addItem</span>(<span class="str">'② 重複チェック'</span>,          <span class="str">'checkDuplicate'</span>)
-    .<span class="fn">addItem</span>(<span class="str">'③ 未確定の保護者を表示'</span>,  <span class="str">'showUndecided'</span>)
+    .<span class="fn">addItem</span>(<span class="str">'② 未提出者一覧を生成【教務主任】'</span>,          <span class="str">'showUnsubmitted'</span>)
+    .<span class="fn">addSeparator</span>()
+    .<span class="fn">addItem</span>(<span class="str">'③ 未確定の保護者を確認【担任】'</span>,            <span class="str">'showUndecided'</span>)
+    .<span class="fn">addItem</span>(<span class="str">'④ お手紙PDF一括生成【担任】'</span>,              <span class="str">'exportAllLettersPDF'</span>)
+    .<span class="fn">addItem</span>(<span class="str">'⑤ 申し送り文面を生成【担任】'</span>,              <span class="str">'generateSiblingMessages'</span>)
     .<span class="fn">addToUi</span>();
 }
 
-<span class="cm">/** ① カレンダー自動生成 */</span>
-<span class="kw">function</span> <span class="fn">buildCalendar</span>() {
-  <span class="kw">const</span> <span class="var">ss</span>   <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getActiveSpreadsheet</span>();
-  <span class="kw">const</span> <span class="var">form</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_FORM</span>);
-  <span class="kw">const</span> <span class="var">cal</span>  <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_CAL</span>);
-  <span class="kw">const</span> <span class="var">ui</span>   <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>();
-
-  <span class="kw">if</span> (<span class="op">!</span><span class="var">form</span> <span class="op">||</span> <span class="op">!</span><span class="var">cal</span>) {
-    <span class="var">ui</span>.<span class="fn">alert</span>(<span class="str">'⚠️ シートが見つかりません。\nシート名の設定を確認してください。'</span>);
+<span class="cm">// ═══════════════════════════════════════════════
+//  ① 全クラスカレンダーを一括生成
+//  【使う人】教務主任
+//  【タイミング】フォーム締切後
+//  処理：フォーム回答を読み取り、クラスごとに
+//        タブを作成。候補枠数で色分け、留意点に★
+// ═══════════════════════════════════════════════</span>
+<span class="kw">function</span> <span class="fn">buildAllCalendars</span>() {
+  <span class="kw">const</span> <span class="var">ss</span>     <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getActiveSpreadsheet</span>();
+  <span class="kw">const</span> <span class="var">formSh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_FORM</span>);
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">formSh</span>) {
+    <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(<span class="str">'⚠️ フォーム回答シートが見つかりません。'</span>);
     <span class="kw">return</span>;
   }
 
-  <span class="cm">// フォーム回答を取得（1行目ヘッダー除く）</span>
-  <span class="kw">const</span> <span class="var">rows</span> <span class="op">=</span> <span class="var">form</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">slice</span>(<span class="num">1</span>);
-
-  <span class="cm">// スロットマップを初期化 {日付|時間帯: [{name, child, rank}]}</span>
-  <span class="kw">const</span> <span class="var">slotMap</span> <span class="op">=</span> {};
-  <span class="var">DATES</span>.<span class="fn">forEach</span>(<span class="var">d</span> <span class="op">=></span> <span class="var">TIME_SLOTS</span>.<span class="fn">forEach</span>(<span class="var">t</span> <span class="op">=></span> {
-    <span class="var">slotMap</span>[<span class="var">d</span> <span class="op">+</span> <span class="str">'|'</span> <span class="op">+</span> <span class="var">t</span>] <span class="op">=</span> [];
-  }));
-
-  <span class="cm">// フォーム回答をスロットに振り分け</span>
-  <span class="var">rows</span>.<span class="fn">forEach</span>(<span class="var">row</span> <span class="op">=></span> {
-    <span class="kw">const</span> <span class="var">name</span>  <span class="op">=</span> <span class="fn">str</span>(<span class="var">row</span>[<span class="var">COL_PARENT</span> <span class="op">-</span> <span class="num">1</span>]);
-    <span class="kw">const</span> <span class="var">child</span> <span class="op">=</span> <span class="fn">str</span>(<span class="var">row</span>[<span class="var">COL_CHILD</span>  <span class="op">-</span> <span class="num">1</span>]);
-    <span class="kw">const</span> <span class="var">w1</span>    <span class="op">=</span> <span class="fn">str</span>(<span class="var">row</span>[<span class="var">COL_WISH1</span>  <span class="op">-</span> <span class="num">1</span>]);
-    <span class="kw">const</span> <span class="var">w2</span>    <span class="op">=</span> <span class="fn">str</span>(<span class="var">row</span>[<span class="var">COL_WISH2</span>  <span class="op">-</span> <span class="num">1</span>]);
-    <span class="kw">const</span> <span class="var">w3</span>    <span class="op">=</span> <span class="fn">str</span>(<span class="var">row</span>[<span class="var">COL_WISH3</span>  <span class="op">-</span> <span class="num">1</span>]);
-    <span class="kw">if</span> (<span class="op">!</span><span class="var">name</span>) <span class="kw">return</span>;
-    [[<span class="var">w1</span>,<span class="str">'◎'</span>],[<span class="var">w2</span>,<span class="str">'○'</span>],[<span class="var">w3</span>,<span class="str">'△'</span>]].<span class="fn">forEach</span>(([<span class="var">slot</span>,<span class="var">rank</span>]) <span class="op">=></span> {
-      <span class="kw">if</span> (<span class="var">slot</span> <span class="op">&&</span> <span class="var">slotMap</span>[<span class="var">slot</span>] <span class="op">!==</span> <span class="kw">undefined</span>)
-        <span class="var">slotMap</span>[<span class="var">slot</span>].<span class="fn">push</span>({<span class="var">name</span>, <span class="var">child</span>, <span class="var">rank</span>});
-    });
+  <span class="cm">// フォーム回答を読み込みクラスごとに分類</span>
+  <span class="kw">const</span> <span class="var">rows</span>     <span class="op">=</span> <span class="var">formSh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">slice</span>(<span class="num">1</span>);
+  <span class="kw">const</span> <span class="var">byClass</span>  <span class="op">=</span> {};
+  <span class="var">CLASSES</span>.<span class="fn">forEach</span>(<span class="var">c</span> <span class="op">=></span> { <span class="var">byClass</span>[<span class="var">c</span>] <span class="op">=</span> []; });
+  <span class="var">rows</span>.<span class="fn">forEach</span>(<span class="var">r</span> <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">cls</span> <span class="op">=</span> <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_CLASS</span><span class="op">-</span><span class="num">1</span>]);
+    <span class="kw">if</span> (<span class="var">byClass</span>[<span class="var">cls</span>]) <span class="var">byClass</span>[<span class="var">cls</span>].<span class="fn">push</span>(<span class="var">r</span>);
   });
 
-  <span class="cm">// シートを初期化して描画</span>
-  <span class="var">cal</span>.<span class="fn">clearContents</span>(); <span class="var">cal</span>.<span class="fn">clearFormats</span>();
-  <span class="fn">drawCalendar</span>(<span class="var">cal</span>, <span class="var">slotMap</span>);
-  <span class="var">ui</span>.<span class="fn">alert</span>(<span class="str">'✅ カレンダーを更新しました！\n\n赤いセルは希望が重なっています。\nどちらかの保護者を隣のコマに移してから確定してください。'</span>);
+  <span class="cm">// 既存のクラスタブを削除して再生成</span>
+  <span class="var">CLASSES</span>.<span class="fn">forEach</span>(<span class="var">cls</span> <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">old</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">cls</span>);
+    <span class="kw">if</span> (<span class="var">old</span>) <span class="var">ss</span>.<span class="fn">deleteSheet</span>(<span class="var">old</span>);
+  });
+
+  <span class="var">CLASSES</span>.<span class="fn">forEach</span>(<span class="var">cls</span> <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">sh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">insertSheet</span>(<span class="var">cls</span>);
+    <span class="var">sh</span>.<span class="fn">setTabColor</span>(<span class="var">COLOR</span>.<span class="var">NAVY</span>);
+    <span class="fn">drawClassCalendar</span>(<span class="var">sh</span>, <span class="var">cls</span>, <span class="var">byClass</span>[<span class="var">cls</span>] <span class="op">||</span> []);
+  });
+
+  <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(
+    <span class="str">'✅ 全'</span><span class="op">+</span><span class="var">CLASSES</span>.<span class="var">length</span><span class="op">+</span><span class="str">'クラス分のカレンダーを生成しました！\n\n'</span>
+    <span class="op">+</span><span class="str">'🔴 赤＝残り1枠（最優先）\n'</span>
+    <span class="op">+</span><span class="str">'🟠 橙＝残り2〜3枠\n'</span>
+    <span class="op">+</span><span class="str">'🟡 黄＝残り4〜6枠\n'</span>
+    <span class="op">+</span><span class="str">'白＝残り7枠以上（いつでも可含む）\n'</span>
+    <span class="op">+</span><span class="str">'★＝留意点あり\n\n'</span>
+    <span class="op">+</span><span class="str">'各クラスタブを担任と共有してください。\n'</span>
+    <span class="op">+</span><span class="str">'担任はチェックボックスをオンにして確定してください。'</span>
+  );
 }
 
-<span class="cm">/** カレンダーを描画する */</span>
-<span class="kw">function</span> <span class="fn">drawCalendar</span>(<span class="var">sh</span>, <span class="var">slotMap</span>) {
-  <span class="kw">const</span> <span class="var">C</span> <span class="op">=</span> {
-    NAVY:<span class="str">'#1A3A6B'</span>, NAVY_L:<span class="str">'#EBF0FA'</span>, WHITE:<span class="str">'#FFFFFF'</span>,
-    RED:<span class="str">'#C0392B'</span>,  RED_L:<span class="str">'#FDECEA'</span>,
-    GRAY:<span class="str">'#4A4A4A'</span>, GRAY_L:<span class="str">'#F5F5F5'</span>,
-    YELLOW:<span class="str">'#FFFDE7'</span>, ORANGE:<span class="str">'#E07B00'</span>
-  };
-  <span class="kw">const</span> <span class="var">cols</span> <span class="op">=</span> <span class="var">DATES</span>.<span class="var">length</span> <span class="op">+</span> <span class="num">1</span>;
+<span class="cm">/** クラス1つ分のカレンダーを描画する */</span>
+<span class="kw">function</span> <span class="fn">drawClassCalendar</span>(<span class="var">sh</span>, <span class="var">cls</span>, <span class="var">classRows</span>) {
+  <span class="var">sh</span>.<span class="fn">clearContents</span>(); <span class="var">sh</span>.<span class="fn">clearFormats</span>();
+
+  <span class="cm">// 各保護者の「来られる（可能な）スロット」を計算</span>
+  <span class="kw">const</span> <span class="var">members</span> <span class="op">=</span> <span class="var">classRows</span>.<span class="fn">map</span>(<span class="var">r</span> <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">ngRaw</span>      <span class="op">=</span> <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_NG</span>  <span class="op">-</span><span class="num">1</span>]);
+    <span class="kw">const</span> <span class="var">ngSlots</span>    <span class="op">=</span> <span class="fn">parseChecks</span>(<span class="var">ngRaw</span>, <span class="var">NG_NONE</span>);
+    <span class="kw">const</span> <span class="var">okSlots</span>    <span class="op">=</span> <span class="var">ALL_SLOTS</span>.<span class="fn">filter</span>(<span class="var">s</span> <span class="op">=></span> <span class="op">!</span><span class="var">ngSlots</span>.<span class="fn">includes</span>(<span class="var">s</span>));
+    <span class="kw">const</span> <span class="var">sibClasses</span> <span class="op">=</span> <span class="fn">parseChecks</span>(<span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_SIB</span> <span class="op">-</span><span class="num">1</span>]), <span class="var">SIB_NONE</span>);
+    <span class="kw">return</span> {
+      <span class="var">parent</span>     : <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_PARENT</span><span class="op">-</span><span class="num">1</span>]),
+      <span class="var">child</span>      : <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_CHILD</span> <span class="op">-</span><span class="num">1</span>]),
+      <span class="var">note</span>       : <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_NOTE</span>  <span class="op">-</span><span class="num">1</span>]),
+      <span class="var">okSlots</span>,
+      <span class="var">okCount</span>    : <span class="var">okSlots</span>.<span class="var">length</span>,
+      <span class="var">sibClasses</span>,
+    };
+  });
 
   <span class="cm">// タイトル行</span>
-  <span class="kw">const</span> <span class="var">t</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="var">cols</span>);
-  <span class="var">t</span>.<span class="fn">merge</span>();
-  <span class="var">t</span>.<span class="fn">setValue</span>(<span class="str">'📅 個人懇談 日程調整カレンダー　【先生が確定日程を割り当てる表】'</span>);
-  <span class="fn">style</span>(<span class="var">t</span>,{bg:<span class="var">C</span>.<span class="var">NAVY</span>,fc:<span class="var">C</span>.<span class="var">WHITE</span>,bold:<span class="kw">true</span>,sz:<span class="num">13</span>,ha:<span class="str">'left'</span>});
-  <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">1</span>,<span class="num">42</span>);
+  <span class="kw">const</span> <span class="var">cols</span> <span class="op">=</span> <span class="var">TIMES</span>.<span class="var">length</span> <span class="op">+</span> <span class="num">2</span>;  <span class="cm">// 日付列 + 時間帯列 + 時間帯数</span>
+  <span class="kw">const</span> <span class="var">tR</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="var">cols</span>);
+  <span class="var">tR</span>.<span class="fn">merge</span>().<span class="fn">setValue</span>(<span class="str">'📅 '</span><span class="op">+</span><span class="var">cls</span><span class="op">+</span><span class="str">' 個人懇談 日程調整カレンダー'</span>);
+  <span class="fn">sty</span>(<span class="var">tR</span>,{bg:<span class="var">COLOR</span>.<span class="var">NAVY</span>,fc:<span class="str">'#FFFFFF'</span>,bold:<span class="kw">true</span>,sz:<span class="num">13</span>,ha:<span class="str">'left'</span>}); <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">1</span>,<span class="num">40</span>);
 
   <span class="cm">// 凡例行</span>
-  <span class="kw">const</span> <span class="var">leg</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">2</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="var">cols</span>);
-  <span class="var">leg</span>.<span class="fn">merge</span>();
-  <span class="var">leg</span>.<span class="fn">setValue</span>(<span class="str">'◎＝第一希望　○＝第二希望　△＝第三希望　　⚠️ 赤背景＝同一コマに2名以上希望あり（要調整）'</span>);
-  <span class="fn">style</span>(<span class="var">leg</span>,{bg:<span class="var">C</span>.<span class="var">YELLOW</span>,fc:<span class="var">C</span>.<span class="var">ORANGE</span>,sz:<span class="num">10</span>,ha:<span class="str">'left'</span>});
-  <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">2</span>,<span class="num">24</span>);
-
-  <span class="cm">// 日付ヘッダー</span>
-  <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">3</span>,<span class="num">32</span>);
-  <span class="fn">style</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">3</span>,<span class="num">1</span>),{val:<span class="str">'時間帯'</span>,bg:<span class="var">C</span>.<span class="var">NAVY</span>,fc:<span class="var">C</span>.<span class="var">WHITE</span>,bold:<span class="kw">true</span>,sz:<span class="num">11</span>});
-  <span class="var">DATES</span>.<span class="fn">forEach</span>((<span class="var">d</span>,<span class="var">i</span>) <span class="op">=></span>
-    <span class="fn">style</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">3</span>,<span class="var">i</span><span class="op">+</span><span class="num">2</span>),{val:<span class="var">d</span>,bg:<span class="var">C</span>.<span class="var">NAVY</span>,fc:<span class="var">C</span>.<span class="var">WHITE</span>,bold:<span class="kw">true</span>,sz:<span class="num">12</span>})
+  <span class="kw">const</span> <span class="var">legR</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">2</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="var">cols</span>);
+  <span class="var">legR</span>.<span class="fn">merge</span>().<span class="fn">setValue</span>(
+    <span class="str">'🔴残り1枠（最優先）　🟠残り2〜3枠　🟡残り4〜6枠　白＝残り7枠以上　'</span>
+    <span class="op">+</span><span class="str">'🟣紫枠＝兄弟申告あり　★＝留意点あり　'</span>
+    <span class="op">+</span><span class="str">'☑確定済み（取消線）'</span>
   );
+  <span class="fn">sty</span>(<span class="var">legR</span>,{bg:<span class="str">'#FFFDE7'</span>,fc:<span class="var">COLOR</span>.<span class="var">ORANGE_TXT</span>,sz:<span class="num">10</span>,ha:<span class="str">'left'</span>}); <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">2</span>,<span class="num">22</span>);
 
-  <span class="cm">// データセル</span>
-  <span class="var">TIME_SLOTS</span>.<span class="fn">forEach</span>((<span class="var">time</span>,<span class="var">ti</span>) <span class="op">=></span> {
-    <span class="kw">const</span> <span class="var">row</span> <span class="op">=</span> <span class="var">ti</span> <span class="op">+</span> <span class="num">4</span>;
-    <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="var">row</span>,<span class="num">52</span>);
-    <span class="fn">style</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">1</span>),{val:<span class="var">time</span>,bg:<span class="var">C</span>.<span class="var">NAVY_L</span>,fc:<span class="var">C</span>.<span class="var">NAVY</span>,bold:<span class="kw">true</span>,sz:<span class="num">10</span>});
-    <span class="var">DATES</span>.<span class="fn">forEach</span>((<span class="var">date</span>,<span class="var">di</span>) <span class="op">=></span> {
-      <span class="kw">const</span> <span class="var">entries</span> <span class="op">=</span> <span class="var">slotMap</span>[<span class="var">date</span><span class="op">+</span><span class="str">'|'</span><span class="op">+</span><span class="var">time</span>] <span class="op">||</span> [];
-      <span class="kw">const</span> <span class="var">cell</span>    <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="var">di</span><span class="op">+</span><span class="num">2</span>);
-      <span class="kw">const</span> <span class="var">text</span>    <span class="op">=</span> <span class="var">entries</span>.<span class="fn">map</span>(<span class="var">e</span> <span class="op">=></span> <span class="var">e</span>.<span class="var">name</span><span class="op">+</span><span class="str">'（'</span><span class="op">+</span><span class="var">e</span>.<span class="var">rank</span><span class="op">+</span><span class="str">'）'</span>).<span class="fn">join</span>(<span class="str">'\n'</span>);
-      <span class="kw">const</span> <span class="var">isDup</span>   <span class="op">=</span> <span class="var">entries</span>.<span class="var">length</span> <span class="op">>=</span> <span class="num">2</span>;
-      <span class="kw">const</span> <span class="var">isEmpty</span> <span class="op">=</span> <span class="var">entries</span>.<span class="var">length</span> <span class="op">===</span> <span class="num">0</span>;
-      <span class="var">cell</span>.<span class="fn">setValue</span>(<span class="var">text</span>).<span class="fn">setWrap</span>(<span class="kw">true</span>)
-          .<span class="fn">setVerticalAlignment</span>(<span class="str">'top'</span>).<span class="fn">setFontSize</span>(<span class="num">10</span>).<span class="fn">setHorizontalAlignment</span>(<span class="str">'left'</span>);
-      <span class="var">cell</span>.<span class="fn">setBackground</span>(<span class="var">isDup</span> <span class="op">?</span> <span class="var">C</span>.<span class="var">RED_L</span> <span class="op">:</span> <span class="var">isEmpty</span> <span class="op">?</span> <span class="var">C</span>.<span class="var">GRAY_L</span> <span class="op">:</span> <span class="var">C</span>.<span class="var">WHITE</span>);
-      <span class="var">cell</span>.<span class="fn">setFontColor</span>(<span class="var">isDup</span> <span class="op">?</span> <span class="var">C</span>.<span class="var">RED</span> <span class="op">:</span> <span class="var">C</span>.<span class="var">GRAY</span>);
-      <span class="kw">if</span> (<span class="var">isDup</span>) <span class="var">cell</span>.<span class="fn">setFontWeight</span>(<span class="str">'bold'</span>);
+  <span class="cm">// ヘッダー：日付×時間帯のグリッド
+  // 行3：日付（DATES）を結合セルで表示
+  // 行4：時間帯（TIMES）を表示</span>
+  <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">3</span>,<span class="num">28</span>); <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">4</span>,<span class="num">28</span>);
+  <span class="cm">// 左上2セルは空白</span>
+  <span class="fn">sty</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">3</span>,<span class="num">1</span>,<span class="num">2</span>,<span class="num">2</span>),{bg:<span class="var">COLOR</span>.<span class="var">NAVY</span>,fc:<span class="str">'#FFFFFF'</span>});
+
+  <span class="var">DATES</span>.<span class="fn">forEach</span>((<span class="var">d</span>,<span class="var">di</span>) <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">startCol</span> <span class="op">=</span> <span class="num">3</span> <span class="op">+</span> <span class="var">di</span> <span class="op">*</span> <span class="var">TIMES</span>.<span class="var">length</span>;
+    <span class="kw">const</span> <span class="var">dateR</span>    <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">3</span>, <span class="var">startCol</span>, <span class="num">1</span>, <span class="var">TIMES</span>.<span class="var">length</span>);
+    <span class="var">dateR</span>.<span class="fn">merge</span>().<span class="fn">setValue</span>(<span class="var">d</span>);
+    <span class="fn">sty</span>(<span class="var">dateR</span>,{bg:<span class="var">COLOR</span>.<span class="var">NAVY</span>,fc:<span class="str">'#FFFFFF'</span>,bold:<span class="kw">true</span>,sz:<span class="num">11</span>});
+    <span class="var">TIMES</span>.<span class="fn">forEach</span>((<span class="var">t</span>,<span class="var">ti</span>) <span class="op">=></span> {
+      <span class="kw">const</span> <span class="var">c</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">4</span>, <span class="var">startCol</span><span class="op">+</span><span class="var">ti</span>);
+      <span class="fn">sty</span>(<span class="var">c</span>,{val:<span class="var">t</span>,bg:<span class="var">COLOR</span>.<span class="var">NAVY_L</span>,fc:<span class="var">COLOR</span>.<span class="var">NAVY</span>,bold:<span class="kw">true</span>,sz:<span class="num">9</span>});
+      <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="var">startCol</span><span class="op">+</span><span class="var">ti</span>, <span class="num">108</span>);
+    });
+  });
+  <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="num">1</span>,<span class="num">20</span>);   <span class="cm">// チェックボックス列</span>
+  <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="num">2</span>,<span class="num">130</span>);  <span class="cm">// 保護者名列</span>
+
+  <span class="cm">// 保護者ごとに1行、列は「CB列・名前列・スロット×24列」
+  // 各スロットセル：可能なら空白、不可なら "✕" を表示</span>
+  <span class="kw">const</span> <span class="var">ROW_START</span> <span class="op">=</span> <span class="num">5</span>;
+  <span class="var">members</span>.<span class="fn">forEach</span>((<span class="var">m</span>, <span class="var">mi</span>) <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">row</span>    <span class="op">=</span> <span class="var">ROW_START</span> <span class="op">+</span> <span class="var">mi</span>;
+    <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="var">row</span>, <span class="num">36</span>);
+
+    <span class="cm">// 色決定（候補枠数）</span>
+    <span class="kw">let</span> <span class="var">rowBg</span>, <span class="var">rowFc</span>;
+    <span class="kw">if</span>      (<span class="var">m</span>.<span class="var">okCount</span> <span class="op"><=</span> <span class="num">1</span>) { <span class="var">rowBg</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">RED</span>;    <span class="var">rowFc</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">RED_TXT</span>; }
+    <span class="kw">else if</span> (<span class="var">m</span>.<span class="var">okCount</span> <span class="op"><=</span> <span class="num">3</span>) { <span class="var">rowBg</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">ORANGE</span>;  <span class="var">rowFc</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">ORANGE_TXT</span>; }
+    <span class="kw">else if</span> (<span class="var">m</span>.<span class="var">okCount</span> <span class="op"><=</span> <span class="num">6</span>) { <span class="var">rowBg</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">YELLOW</span>;  <span class="var">rowFc</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">YELLOW_TXT</span>; }
+    <span class="kw">else</span>                      { <span class="var">rowBg</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">WHITE</span>;   <span class="var">rowFc</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">GRAY_TXT</span>; }
+
+    <span class="cm">// チェックボックス列（A列）</span>
+    <span class="kw">const</span> <span class="var">cbCell</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="num">1</span>);
+    <span class="var">cbCell</span>.<span class="fn">insertCheckboxes</span>();
+    <span class="var">cbCell</span>.<span class="fn">setBackground</span>(<span class="var">rowBg</span>);
+
+    <span class="cm">// 保護者名列（B列）：留意点あり→★付加、兄弟あり→紫枠</span>
+    <span class="kw">const</span> <span class="var">nameLabel</span> <span class="op">=</span> (<span class="var">m</span>.<span class="var">note</span> <span class="op">?</span> <span class="str">'★ '</span> <span class="op">:</span> <span class="str">''</span>) <span class="op">+</span> <span class="var">m</span>.<span class="var">parent</span>
+      <span class="op">+</span> (<span class="var">m</span>.<span class="var">okCount</span> <span class="op"><=</span> <span class="num">6</span> <span class="op">?</span> <span class="str">'【残'</span><span class="op">+</span><span class="var">m</span>.<span class="var">okCount</span><span class="op">+</span><span class="str">'枠】'</span> <span class="op">:</span> <span class="str">''</span>);
+    <span class="kw">const</span> <span class="var">nameCell</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="num">2</span>);
+    <span class="fn">sty</span>(<span class="var">nameCell</span>,{val:<span class="var">nameLabel</span>,bg:<span class="var">rowBg</span>,fc:<span class="var">rowFc</span>,bold:<span class="var">m</span>.<span class="var">okCount</span><span class="op"><=</span><span class="num">3</span>,sz:<span class="num">10</span>,ha:<span class="str">'left'</span>});
+    <span class="kw">if</span> (<span class="var">m</span>.<span class="var">sibClasses</span>.<span class="var">length</span> <span class="op">></span> <span class="num">0</span>) {
+      <span class="kw">const</span> <span class="var">purpleBorder</span> <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">newColor</span>().<span class="fn">setRgbColor</span>(<span class="var">COLOR</span>.<span class="var">PURPLE</span>).<span class="fn">build</span>();
+      <span class="var">nameCell</span>.<span class="fn">setBorder</span>(<span class="kw">null</span>,<span class="kw">true</span>,<span class="kw">null</span>,<span class="kw">null</span>,<span class="kw">false</span>,<span class="kw">false</span>,
+        <span class="var">purpleBorder</span>, <span class="var">SpreadsheetApp</span>.<span class="var">BorderStyle</span>.<span class="var">SOLID_THICK</span>);
+    }
+
+    <span class="cm">// スロット列：可能→薄色背景、不可→"✕"グレー</span>
+    <span class="var">ALL_SLOTS</span>.<span class="fn">forEach</span>((<span class="var">slot</span>, <span class="var">si</span>) <span class="op">=></span> {
+      <span class="kw">const</span> <span class="var">col</span>   <span class="op">=</span> <span class="num">3</span> <span class="op">+</span> <span class="var">si</span>;
+      <span class="kw">const</span> <span class="var">cell</span>  <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="var">col</span>);
+      <span class="kw">const</span> <span class="var">isOk</span>  <span class="op">=</span> <span class="var">m</span>.<span class="var">okSlots</span>.<span class="fn">includes</span>(<span class="var">slot</span>);
+      <span class="kw">if</span> (<span class="var">isOk</span>) {
+        <span class="fn">sty</span>(<span class="var">cell</span>,{val:<span class="str">''</span>,bg:<span class="var">rowBg</span>,fc:<span class="var">rowFc</span>,sz:<span class="num">10</span>});
+      } <span class="kw">else</span> {
+        <span class="fn">sty</span>(<span class="var">cell</span>,{val:<span class="str">'✕'</span>,bg:<span class="var">COLOR</span>.<span class="var">GRAY_L</span>,fc:<span class="var">COLOR</span>.<span class="var">GRAY_B</span>,sz:<span class="num">10</span>});
+      }
     });
   });
 
-  <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="num">1</span>,<span class="num">115</span>);
-  <span class="var">DATES</span>.<span class="fn">forEach</span>((<span class="var">_</span>,<span class="var">i</span>) <span class="op">=></span> <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="var">i</span><span class="op">+</span><span class="num">2</span>,<span class="num">185</span>));
+  <span class="cm">// 留意点欄を最後の列に追加</span>
+  <span class="kw">const</span> <span class="var">noteCol</span> <span class="op">=</span> <span class="var">ALL_SLOTS</span>.<span class="var">length</span> <span class="op">+</span> <span class="num">3</span>;
+  <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="var">noteCol</span>, <span class="num">220</span>);
+  <span class="fn">sty</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">3</span>, <span class="var">noteCol</span>, <span class="num">2</span>, <span class="num">1</span>),{val:<span class="str">'留意点'</span>,bg:<span class="var">COLOR</span>.<span class="var">NAVY</span>,fc:<span class="str">'#FFFFFF'</span>,bold:<span class="kw">true</span>,sz:<span class="num">10</span>});
+  <span class="var">members</span>.<span class="fn">forEach</span>((<span class="var">m</span>, <span class="var">mi</span>) <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">row</span>  <span class="op">=</span> <span class="var">ROW_START</span> <span class="op">+</span> <span class="var">mi</span>;
+    <span class="kw">const</span> <span class="var">cell</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="var">noteCol</span>);
+    <span class="kw">const</span> <span class="var">sibTxt</span> <span class="op">=</span> <span class="var">m</span>.<span class="var">sibClasses</span>.<span class="var">length</span>
+      <span class="op">?</span> <span class="str">'兄弟：'</span><span class="op">+</span><span class="var">m</span>.<span class="var">sibClasses</span>.<span class="fn">join</span>(<span class="str">'・'</span>) : <span class="str">''</span>;
+    <span class="kw">const</span> <span class="var">noteVal</span> <span class="op">=</span> [<span class="var">m</span>.<span class="var">note</span>, <span class="var">sibTxt</span>].<span class="fn">filter</span>(<span class="var">Boolean</span>).<span class="fn">join</span>(<span class="str">' ／ '</span>);
+    <span class="kw">const</span> <span class="var">bg</span>  <span class="op">=</span> <span class="var">m</span>.<span class="var">okCount</span><span class="op"><=</span><span class="num">1</span><span class="op">?</span><span class="var">COLOR</span>.<span class="var">RED</span>:<span class="var">m</span>.<span class="var">okCount</span><span class="op"><=</span><span class="num">3</span><span class="op">?</span><span class="var">COLOR</span>.<span class="var">ORANGE</span>
+                :<span class="var">m</span>.<span class="var">okCount</span><span class="op"><=</span><span class="num">6</span><span class="op">?</span><span class="var">COLOR</span>.<span class="var">YELLOW</span>:<span class="var">COLOR</span>.<span class="var">WHITE</span>;
+    <span class="fn">sty</span>(<span class="var">cell</span>,{val:<span class="var">noteVal</span>,bg:<span class="var">bg</span>,fc:<span class="var">COLOR</span>.<span class="var">GRAY_TXT</span>,sz:<span class="num">9</span>,ha:<span class="str">'left'</span>});
+    <span class="var">cell</span>.<span class="fn">setWrap</span>(<span class="kw">true</span>).<span class="fn">setVerticalAlignment</span>(<span class="str">'middle'</span>);
+  });
 }
 
-<span class="cm">/** セルスタイル一括適用ヘルパー */</span>
-<span class="kw">function</span> <span class="fn">style</span>(<span class="var">r</span>,{<span class="var">val</span>,<span class="var">bg</span>,<span class="var">fc</span>,<span class="var">bold</span><span class="op">=</span><span class="kw">false</span>,<span class="var">sz</span><span class="op">=</span><span class="num">10</span>,<span class="var">ha</span><span class="op">=</span><span class="str">'center'</span>}<span class="op">=</span>{}) {
-  <span class="kw">if</span> (<span class="var">val</span>  <span class="op">!==</span> <span class="kw">undefined</span>) <span class="var">r</span>.<span class="fn">setValue</span>(<span class="var">val</span>);
-  <span class="kw">if</span> (<span class="var">bg</span>)   <span class="var">r</span>.<span class="fn">setBackground</span>(<span class="var">bg</span>);
-  <span class="kw">if</span> (<span class="var">fc</span>)   <span class="var">r</span>.<span class="fn">setFontColor</span>(<span class="var">fc</span>);
-  <span class="var">r</span>.<span class="fn">setFontWeight</span>(<span class="var">bold</span> <span class="op">?</span> <span class="str">'bold'</span> <span class="op">:</span> <span class="str">'normal'</span>).<span class="fn">setFontSize</span>(<span class="var">sz</span>)
+<span class="cm">// ═══════════════════════════════════════════════
+//  onEdit トリガー
+//  チェックボックスをオンにした瞬間：
+//    1. 同保護者の全スロットセルに取消線
+//    2. 確定済み一覧に自動転記
+//  チェックをオフにした場合：
+//    1. 取消線を解除
+//    2. 確定済み一覧から削除
+// ═══════════════════════════════════════════════</span>
+<span class="kw">function</span> <span class="fn">onEdit</span>(<span class="var">e</span>) {
+  <span class="kw">const</span> <span class="var">sh</span>   <span class="op">=</span> <span class="var">e</span>.<span class="var">source</span>.<span class="fn">getActiveSheet</span>();
+  <span class="kw">const</span> <span class="var">cls</span>  <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getName</span>();
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">CLASSES</span>.<span class="fn">includes</span>(<span class="var">cls</span>)) <span class="kw">return</span>;  <span class="cm">// クラスタブ以外は無視</span>
+
+  <span class="kw">const</span> <span class="var">row</span> <span class="op">=</span> <span class="var">e</span>.<span class="var">range</span>.<span class="fn">getRow</span>();
+  <span class="kw">const</span> <span class="var">col</span> <span class="op">=</span> <span class="var">e</span>.<span class="var">range</span>.<span class="fn">getColumn</span>();
+  <span class="kw">if</span> (<span class="var">col</span> <span class="op">!==</span> <span class="num">1</span> <span class="op">||</span> <span class="var">row</span> <span class="op"><</span> <span class="num">5</span>) <span class="kw">return</span>;  <span class="cm">// A列・5行目以降のみ対象</span>
+
+  <span class="kw">const</span> <span class="var">checked</span>   <span class="op">=</span> <span class="var">e</span>.<span class="var">range</span>.<span class="fn">getValue</span>() <span class="op">===</span> <span class="kw">true</span>;
+  <span class="kw">const</span> <span class="var">nameCell</span>  <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="num">2</span>);
+  <span class="kw">const</span> <span class="var">slotRange</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="var">ALL_SLOTS</span>.<span class="var">length</span>);
+  <span class="kw">const</span> <span class="var">noteCell</span>  <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="var">ALL_SLOTS</span>.<span class="var">length</span><span class="op">+</span><span class="num">3</span>);
+
+  <span class="kw">if</span> (<span class="var">checked</span>) {
+    <span class="cm">// 取消線を引く</span>
+    [<span class="var">nameCell</span>, <span class="var">slotRange</span>, <span class="var">noteCell</span>].<span class="fn">forEach</span>(<span class="var">r</span> <span class="op">=></span> {
+      <span class="var">r</span>.<span class="fn">setFontLine</span>(<span class="str">'line-through'</span>);
+      <span class="var">r</span>.<span class="fn">setBackground</span>(<span class="var">COLOR</span>.<span class="var">DONE_BG</span>);
+      <span class="var">r</span>.<span class="fn">setFontColor</span>(<span class="var">COLOR</span>.<span class="var">DONE_TXT</span>);
+    });
+    <span class="cm">// 確定コマを特定（チェック時に確定スロットをポップアップで選ばせる）</span>
+    <span class="fn">confirmSlotDialog</span>(<span class="var">e</span>.<span class="var">source</span>, <span class="var">sh</span>, <span class="var">row</span>, <span class="var">cls</span>);
+  } <span class="kw">else</span> {
+    <span class="cm">// 取消線を解除・背景色を元に戻す</span>
+    [<span class="var">nameCell</span>, <span class="var">slotRange</span>, <span class="var">noteCell</span>].<span class="fn">forEach</span>(<span class="var">r</span> <span class="op">=></span> {
+      <span class="var">r</span>.<span class="fn">setFontLine</span>(<span class="str">'none'</span>);
+    });
+    <span class="fn">removeFromKakutei</span>(<span class="var">e</span>.<span class="var">source</span>, <span class="var">cls</span>, <span class="var">nameCell</span>.<span class="fn">getValue</span>().<span class="fn">replace</span>(<span class="op">/</span>[★【】\d枠残]+<span class="op">/g</span>,<span class="str">''</span>).<span class="fn">trim</span>());
+    <span class="fn">restoreRowColor</span>(<span class="var">sh</span>, <span class="var">row</span>);
+  }
+}
+
+<span class="cm">/** 確定スロットをポップアップで選択し、確定済み一覧に転記 */</span>
+<span class="kw">function</span> <span class="fn">confirmSlotDialog</span>(<span class="var">ss</span>, <span class="var">sh</span>, <span class="var">row</span>, <span class="var">cls</span>) {
+  <span class="cm">// 可能スロット（✕でないセル）を収集</span>
+  <span class="kw">const</span> <span class="var">slotVals</span>  <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="var">ALL_SLOTS</span>.<span class="var">length</span>).<span class="fn">getValues</span>()[<span class="num">0</span>];
+  <span class="kw">const</span> <span class="var">okSlots</span>   <span class="op">=</span> <span class="var">ALL_SLOTS</span>.<span class="fn">filter</span>((<span class="var">s</span>,<span class="var">i</span>) <span class="op">=></span> <span class="var">slotVals</span>[<span class="var">i</span>] <span class="op">!==</span> <span class="str">'✕'</span>);
+  <span class="kw">const</span> <span class="var">nameRaw</span>   <span class="op">=</span> <span class="fn">str</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>, <span class="num">2</span>).<span class="fn">getValue</span>());
+  <span class="kw">const</span> <span class="var">parentName</span><span class="op">=</span> <span class="var">nameRaw</span>.<span class="fn">replace</span>(<span class="op">/</span>[★【】\d枠残]+<span class="op">/g</span>,<span class="str">''</span>).<span class="fn">trim</span>();
+
+  <span class="kw">if</span> (<span class="var">okSlots</span>.<span class="var">length</span> <span class="op">===</span> <span class="num">0</span>) {
+    <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(<span class="str">'⚠️ 候補スロットがありません。確定できません。'</span>);
+    <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">1</span>).<span class="fn">setValue</span>(<span class="kw">false</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="cm">// 候補一覧をポップアップで表示（番号選択方式）</span>
+  <span class="kw">const</span> <span class="var">list</span>  <span class="op">=</span> <span class="var">okSlots</span>.<span class="fn">map</span>((<span class="var">s</span>,<span class="var">i</span>) <span class="op">=></span> (<span class="var">i</span><span class="op">+</span><span class="num">1</span>)<span class="op">+</span><span class="str">'. '</span><span class="op">+</span><span class="var">s</span>).<span class="fn">join</span>(<span class="str">'\n'</span>);
+  <span class="kw">const</span> <span class="var">resp</span>  <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">prompt</span>(
+    <span class="str">'📅 確定スロットを選択'</span>,
+    <span class="var">parentName</span><span class="op">+</span><span class="str">' さんの確定日時を番号で入力してください：\n\n'</span><span class="op">+</span><span class="var">list</span>,
+    <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="var">ButtonSet</span>.<span class="var">OK_CANCEL</span>
+  );
+  <span class="kw">if</span> (<span class="var">resp</span>.<span class="fn">getSelectedButton</span>() <span class="op">!==</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="var">Button</span>.<span class="var">OK</span>) {
+    <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">1</span>).<span class="fn">setValue</span>(<span class="kw">false</span>);
+    [<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">2</span>), <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">3</span>,<span class="num">1</span>,<span class="var">ALL_SLOTS</span>.<span class="var">length</span>)]
+      .<span class="fn">forEach</span>(<span class="var">r</span> <span class="op">=></span> <span class="var">r</span>.<span class="fn">setFontLine</span>(<span class="str">'none'</span>));
+    <span class="fn">restoreRowColor</span>(<span class="var">sh</span>, <span class="var">row</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="kw">const</span> <span class="var">idx</span>  <span class="op">=</span> <span class="var">parseInt</span>(<span class="var">resp</span>.<span class="fn">getResponseText</span>().<span class="fn">trim</span>()) <span class="op">-</span> <span class="num">1</span>;
+  <span class="kw">const</span> <span class="var">slot</span> <span class="op">=</span> <span class="var">okSlots</span>[<span class="var">idx</span>];
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">slot</span>) {
+    <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(<span class="str">'⚠️ 無効な番号です。もう一度チェックしてやり直してください。'</span>);
+    <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">1</span>).<span class="fn">setValue</span>(<span class="kw">false</span>);
+    [<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">2</span>), <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">3</span>,<span class="num">1</span>,<span class="var">ALL_SLOTS</span>.<span class="var">length</span>)]
+      .<span class="fn">forEach</span>(<span class="var">r</span> <span class="op">=></span> <span class="var">r</span>.<span class="fn">setFontLine</span>(<span class="str">'none'</span>));
+    <span class="fn">restoreRowColor</span>(<span class="var">sh</span>, <span class="var">row</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="cm">// 確定済み一覧に転記</span>
+  <span class="fn">addToKakutei</span>(<span class="var">ss</span>, <span class="var">cls</span>, <span class="var">parentName</span>, <span class="fn">str</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">2</span>).<span class="fn">getValue</span>()), <span class="var">slot</span>);
+}
+
+<span class="cm">/** 確定済み一覧に1行追加 */</span>
+<span class="kw">function</span> <span class="fn">addToKakutei</span>(<span class="var">ss</span>, <span class="var">cls</span>, <span class="var">parent</span>, <span class="var">nameRaw</span>, <span class="var">slot</span>) {
+  <span class="kw">let</span> <span class="var">sh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_KAKUTEI</span>);
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">sh</span>) {
+    <span class="var">sh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">insertSheet</span>(<span class="var">SHEET_KAKUTEI</span>);
+    <span class="var">sh</span>.<span class="fn">appendRow</span>([<span class="str">'クラス'</span>,<span class="str">'保護者名'</span>,<span class="str">'確定日時'</span>,<span class="str">'お手紙'</span>,<span class="str">'備考'</span>]);
+  }
+  <span class="cm">// 既に同じ保護者が登録済みなら更新</span>
+  <span class="kw">const</span> <span class="var">data</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>();
+  <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">1</span>; <span class="var">i</span> <span class="op"><</span> <span class="var">data</span>.<span class="var">length</span>; <span class="var">i</span><span class="op">++</span>) {
+    <span class="kw">if</span> (<span class="fn">str</span>(<span class="var">data</span>[<span class="var">i</span>][<span class="num">0</span>]) <span class="op">===</span> <span class="var">cls</span> <span class="op">&&</span> <span class="fn">str</span>(<span class="var">data</span>[<span class="var">i</span>][<span class="num">1</span>]) <span class="op">===</span> <span class="var">parent</span>) {
+      <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">i</span><span class="op">+</span><span class="num">1</span>,<span class="num">3</span>).<span class="fn">setValue</span>(<span class="var">slot</span>);
+      <span class="kw">return</span>;
+    }
+  }
+  <span class="var">sh</span>.<span class="fn">appendRow</span>([<span class="var">cls</span>, <span class="var">parent</span>, <span class="var">slot</span>, <span class="str">'⬜ 未出力'</span>, <span class="str">''</span>]);
+}
+
+<span class="cm">/** 確定済み一覧から1行削除（チェックオフ時） */</span>
+<span class="kw">function</span> <span class="fn">removeFromKakutei</span>(<span class="var">ss</span>, <span class="var">cls</span>, <span class="var">parent</span>) {
+  <span class="kw">const</span> <span class="var">sh</span>   <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_KAKUTEI</span>);
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">sh</span>) <span class="kw">return</span>;
+  <span class="kw">const</span> <span class="var">data</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>();
+  <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="var">data</span>.<span class="var">length</span> <span class="op">-</span> <span class="num">1</span>; <span class="var">i</span> <span class="op">>=</span> <span class="num">1</span>; <span class="var">i</span><span class="op">--</span>) {
+    <span class="kw">if</span> (<span class="fn">str</span>(<span class="var">data</span>[<span class="var">i</span>][<span class="num">0</span>]) <span class="op">===</span> <span class="var">cls</span> <span class="op">&&</span> <span class="fn">str</span>(<span class="var">data</span>[<span class="var">i</span>][<span class="num">1</span>]) <span class="op">===</span> <span class="var">parent</span>)
+      <span class="var">sh</span>.<span class="fn">deleteRow</span>(<span class="var">i</span><span class="op">+</span><span class="num">1</span>);
+  }
+}
+
+<span class="cm">/** 行の背景色を候補枠数に応じて復元 */</span>
+<span class="kw">function</span> <span class="fn">restoreRowColor</span>(<span class="var">sh</span>, <span class="var">row</span>) {
+  <span class="kw">const</span> <span class="var">nameVal</span>  <span class="op">=</span> <span class="fn">str</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">2</span>).<span class="fn">getValue</span>());
+  <span class="kw">const</span> <span class="var">matchOk</span>  <span class="op">=</span> <span class="var">nameVal</span>.<span class="fn">match</span>(<span class="op">/</span>【残(\d+)枠】<span class="op">/</span>);
+  <span class="kw">const</span> <span class="var">okCount</span>  <span class="op">=</span> <span class="var">matchOk</span> <span class="op">?</span> <span class="var">parseInt</span>(<span class="var">matchOk</span>[<span class="num">1</span>]) <span class="op">:</span> <span class="num">24</span>;
+  <span class="kw">let</span> <span class="var">bg</span>, <span class="var">fc</span>;
+  <span class="kw">if</span>      (<span class="var">okCount</span> <span class="op"><=</span> <span class="num">1</span>) { <span class="var">bg</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">RED</span>;    <span class="var">fc</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">RED_TXT</span>; }
+  <span class="kw">else if</span> (<span class="var">okCount</span> <span class="op"><=</span> <span class="num">3</span>) { <span class="var">bg</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">ORANGE</span>;  <span class="var">fc</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">ORANGE_TXT</span>; }
+  <span class="kw">else if</span> (<span class="var">okCount</span> <span class="op"><=</span> <span class="num">6</span>) { <span class="var">bg</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">YELLOW</span>;  <span class="var">fc</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">YELLOW_TXT</span>; }
+  <span class="kw">else</span>                   { <span class="var">bg</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">WHITE</span>;   <span class="var">fc</span><span class="op">=</span><span class="var">COLOR</span>.<span class="var">GRAY_TXT</span>; }
+  <span class="kw">const</span> <span class="var">totalCols</span> <span class="op">=</span> <span class="var">ALL_SLOTS</span>.<span class="var">length</span> <span class="op">+</span> <span class="num">3</span>;
+  <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">row</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="var">totalCols</span>).<span class="fn">setBackground</span>(<span class="var">bg</span>).<span class="fn">setFontColor</span>(<span class="var">fc</span>).<span class="fn">setFontLine</span>(<span class="str">'none'</span>);
+}
+
+<span class="cm">// ═══════════════════════════════════════════════
+//  ② 未提出者一覧を生成【教務主任】
+// ═══════════════════════════════════════════════</span>
+<span class="kw">function</span> <span class="fn">showUnsubmitted</span>() {
+  <span class="kw">const</span> <span class="var">ss</span>       <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getActiveSpreadsheet</span>();
+  <span class="kw">const</span> <span class="var">formSh</span>   <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_FORM</span>);
+  <span class="kw">const</span> <span class="var">rosterSh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_ROSTER</span>);
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">rosterSh</span>) {
+    <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(<span class="str">'⚠️「クラス名簿設定」シートが見つかりません。\nA列にクラス名・B列に定員人数を入力してください。'</span>);
+    <span class="kw">return</span>;
+  }
+  <span class="kw">const</span> <span class="var">rosterMap</span> <span class="op">=</span> {};
+  <span class="var">rosterSh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">filter</span>(<span class="var">r</span><span class="op">=></span><span class="fn">str</span>(<span class="var">r</span>[<span class="num">0</span>]))
+    .<span class="fn">forEach</span>(<span class="var">r</span><span class="op">=></span>{ <span class="var">rosterMap</span>[<span class="fn">str</span>(<span class="var">r</span>[<span class="num">0</span>])] <span class="op">=</span> <span class="var">Number</span>(<span class="var">r</span>[<span class="num">1</span>])<span class="op">||</span><span class="num">0</span>; });
+
+  <span class="kw">const</span> <span class="var">submitted</span> <span class="op">=</span> {};
+  <span class="kw">const</span> <span class="var">sibRefs</span>   <span class="op">=</span> {};
+  <span class="var">formSh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">slice</span>(<span class="num">1</span>).<span class="fn">forEach</span>(<span class="var">r</span><span class="op">=></span>{
+    <span class="kw">const</span> <span class="var">cls</span>  <span class="op">=</span> <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_CLASS</span> <span class="op">-</span><span class="num">1</span>]);
+    <span class="kw">const</span> <span class="var">name</span> <span class="op">=</span> <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_PARENT</span><span class="op">-</span><span class="num">1</span>]);
+    <span class="kw">if</span> (<span class="op">!</span><span class="var">cls</span><span class="op">||</span><span class="op">!</span><span class="var">name</span>) <span class="kw">return</span>;
+    <span class="kw">if</span> (<span class="op">!</span><span class="var">submitted</span>[<span class="var">cls</span>]) <span class="var">submitted</span>[<span class="var">cls</span>]<span class="op">=</span>[];
+    <span class="var">submitted</span>[<span class="var">cls</span>].<span class="fn">push</span>(<span class="var">name</span>);
+    <span class="fn">parseChecks</span>(<span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_SIB</span><span class="op">-</span><span class="num">1</span>]),<span class="var">SIB_NONE</span>).<span class="fn">forEach</span>(<span class="var">sc</span><span class="op">=></span>{
+      <span class="kw">if</span>(<span class="op">!</span><span class="var">sibRefs</span>[<span class="var">sc</span>])<span class="var">sibRefs</span>[<span class="var">sc</span>]<span class="op">=</span>[];
+      <span class="var">sibRefs</span>[<span class="var">sc</span>].<span class="fn">push</span>(<span class="var">name</span><span class="op">+</span><span class="str">'（'</span><span class="op">+</span><span class="var">cls</span><span class="op">+</span><span class="str">'）'</span>);
+    });
+  });
+
+  <span class="kw">let</span> <span class="var">sh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_UNSUB</span>);
+  <span class="kw">if</span>(<span class="var">sh</span>)<span class="var">ss</span>.<span class="fn">deleteSheet</span>(<span class="var">sh</span>);
+  <span class="var">sh</span><span class="op">=</span><span class="var">ss</span>.<span class="fn">insertSheet</span>(<span class="var">SHEET_UNSUB</span>); <span class="var">sh</span>.<span class="fn">setTabColor</span>(<span class="var">COLOR</span>.<span class="var">RED_TXT</span>);
+  <span class="kw">const</span> <span class="var">titleR</span><span class="op">=</span><span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">6</span>);
+  <span class="var">titleR</span>.<span class="fn">merge</span>().<span class="fn">setValue</span>(<span class="str">'📋 未提出者一覧【教務主任用】締切後に随時実行して全校把握に活用'</span>);
+  <span class="fn">sty</span>(<span class="var">titleR</span>,{bg:<span class="var">COLOR</span>.<span class="var">NAVY</span>,fc:<span class="str">'#FFFFFF'</span>,bold:<span class="kw">true</span>,sz:<span class="num">13</span>,ha:<span class="str">'left'</span>}); <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">1</span>,<span class="num">40</span>);
+  [<span class="str">'クラス'</span>,<span class="str">'定員'</span>,<span class="str">'提出済'</span>,<span class="str">'未提出数'</span>,<span class="str">'未提出保護者名'</span>,<span class="str">'兄弟申告（他クラス）'</span>]
+    .<span class="fn">forEach</span>((<span class="var">h</span>,<span class="var">i</span>)<span class="op">=></span><span class="fn">sty</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">2</span>,<span class="var">i</span><span class="op">+</span><span class="num">1</span>),{val:<span class="var">h</span>,bg:<span class="var">COLOR</span>.<span class="var">NAVY</span>,fc:<span class="str">'#FFFFFF'</span>,bold:<span class="kw">true</span>,sz:<span class="num">11</span>}));
+  <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">2</span>,<span class="num">28</span>);
+
+  <span class="kw">let</span> <span class="var">ri</span><span class="op">=</span><span class="num">3</span>, <span class="var">totCap</span><span class="op">=</span><span class="num">0</span>, <span class="var">totDone</span><span class="op">=</span><span class="num">0</span>;
+  <span class="var">Object</span>.<span class="fn">entries</span>(<span class="var">rosterMap</span>).<span class="fn">forEach</span>(([<span class="var">cls</span>,<span class="var">cap</span>])<span class="op">=></span>{
+    <span class="kw">const</span> <span class="var">done</span>   <span class="op">=</span> (<span class="var">submitted</span>[<span class="var">cls</span>]<span class="op">||</span>[]).<span class="var">length</span>;
+    <span class="kw">const</span> <span class="var">miss</span>   <span class="op">=</span> <span class="var">cap</span><span class="op">-</span><span class="var">done</span>;
+    <span class="kw">const</span> <span class="var">sibTxt</span> <span class="op">=</span> (<span class="var">sibRefs</span>[<span class="var">cls</span>]<span class="op">||</span>[]).<span class="fn">join</span>(<span class="str">'、'</span>);
+    <span class="kw">const</span> <span class="var">bg</span>     <span class="op">=</span> <span class="var">miss</span><span class="op"><=</span><span class="num">0</span><span class="op">?</span><span class="var">COLOR</span>.<span class="var">GREEN_L</span>:<span class="var">miss</span><span class="op">>=</span><span class="num">3</span><span class="op">?</span><span class="var">COLOR</span>.<span class="var">RED</span>:<span class="var">COLOR</span>.<span class="var">ORANGE</span>;
+    [<span class="var">cls</span>,<span class="var">cap</span>,<span class="var">done</span>,<span class="var">miss</span><span class="op"><=</span><span class="num">0</span><span class="op">?</span><span class="str">'✅全員'</span>:<span class="var">miss</span><span class="op">+</span><span class="str">'名'</span>,<span class="var">miss</span><span class="op"><=</span><span class="num">0</span><span class="op">?</span><span class="str">''</span>:<span class="str">'※名簿と照合'</span>,<span class="var">sibTxt</span>]
+      .<span class="fn">forEach</span>((<span class="var">v</span>,<span class="var">i</span>)<span class="op">=></span>{
+        <span class="kw">const</span> <span class="var">c</span><span class="op">=</span><span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">ri</span>,<span class="var">i</span><span class="op">+</span><span class="num">1</span>);
+        <span class="fn">sty</span>(<span class="var">c</span>,{val:<span class="var">v</span>,bg:<span class="var">bg</span>,sz:<span class="num">11</span>,
+          fc:<span class="var">i</span><span class="op">===</span><span class="num">3</span><span class="op">&&</span><span class="var">miss</span><span class="op">></span><span class="num">0</span><span class="op">?</span><span class="var">COLOR</span>.<span class="var">RED_TXT</span>:<span class="var">i</span><span class="op">===</span><span class="num">5</span><span class="op">?</span><span class="var">COLOR</span>.<span class="var">PURPLE</span>:<span class="var">COLOR</span>.<span class="var">GRAY_TXT</span>,
+          bold:<span class="var">i</span><span class="op">===</span><span class="num">3</span>,ha:<span class="var">i</span><span class="op"><=</span><span class="num">3</span><span class="op">?</span><span class="str">'center'</span>:<span class="str">'left'</span>});
+      });
+    <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="var">ri</span>,<span class="num">32</span>); <span class="var">ri</span><span class="op">++</span>; <span class="var">totCap</span><span class="op">+=</span><span class="var">cap</span>; <span class="var">totDone</span><span class="op">+=</span><span class="var">done</span>;
+  });
+  [<span class="num">90</span>,<span class="num">55</span>,<span class="num">55</span>,<span class="num">90</span>,<span class="num">200</span>,<span class="num">260</span>].<span class="fn">forEach</span>((<span class="var">w</span>,<span class="var">i</span>)<span class="op">=></span><span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="var">i</span><span class="op">+</span><span class="num">1</span>,<span class="var">w</span>));
+  <span class="var">ri</span><span class="op">++</span>;
+  <span class="kw">const</span> <span class="var">sumR</span><span class="op">=</span><span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">ri</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">6</span>); <span class="var">sumR</span>.<span class="fn">merge</span>();
+  <span class="fn">sty</span>(<span class="var">sumR</span>,{val:<span class="str">'全校：定員'</span><span class="op">+</span><span class="var">totCap</span><span class="op">+</span><span class="str">'名　提出済'</span><span class="op">+</span><span class="var">totDone</span><span class="op">+</span><span class="str">'名　未提出'</span><span class="op">+</span>(<span class="var">totCap</span><span class="op">-</span><span class="var">totDone</span>)<span class="op">+</span><span class="str">'名'</span>,
+    bg:<span class="var">COLOR</span>.<span class="var">NAVY_L</span>,fc:<span class="var">COLOR</span>.<span class="var">NAVY</span>,bold:<span class="kw">true</span>,sz:<span class="num">12</span>,ha:<span class="str">'left'</span>}); <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="var">ri</span>,<span class="num">32</span>);
+  <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(<span class="str">'✅ 未提出者一覧を生成しました！\n🟢緑＝全員　🟡橙＝少数未提出　🔴赤＝3名以上未提出'</span>);
+}
+
+<span class="cm">// ═══════════════════════════════════════════════
+//  ③ 未確定の保護者を確認【担任】
+// ═══════════════════════════════════════════════</span>
+<span class="kw">function</span> <span class="fn">showUndecided</span>() {
+  <span class="kw">const</span> <span class="var">ss</span>    <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getActiveSpreadsheet</span>();
+  <span class="kw">const</span> <span class="var">kakSh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_KAKUTEI</span>);
+  <span class="kw">const</span> <span class="var">ui</span>    <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>();
+  <span class="kw">const</span> <span class="var">clsInput</span> <span class="op">=</span> <span class="var">ui</span>.<span class="fn">prompt</span>(<span class="str">'確認するクラス名を入力してください（例：1年2組）'</span>);
+  <span class="kw">if</span> (<span class="var">clsInput</span>.<span class="fn">getSelectedButton</span>() <span class="op">!==</span> <span class="var">ui</span>.<span class="var">Button</span>.<span class="var">OK</span>) <span class="kw">return</span>;
+  <span class="kw">const</span> <span class="var">cls</span>   <span class="op">=</span> <span class="var">clsInput</span>.<span class="fn">getResponseText</span>().<span class="fn">trim</span>();
+  <span class="kw">const</span> <span class="var">clsSh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">cls</span>);
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">clsSh</span>) { <span class="var">ui</span>.<span class="fn">alert</span>(<span class="str">'⚠️ クラスタブが見つかりません。①を先に実行してください。'</span>); <span class="kw">return</span>; }
+
+  <span class="kw">const</span> <span class="var">total</span>  <span class="op">=</span> <span class="var">clsSh</span>.<span class="fn">getLastRow</span>() <span class="op">-</span> <span class="num">4</span>;
+  <span class="kw">const</span> <span class="var">checked</span><span class="op">=</span> <span class="var">clsSh</span>.<span class="fn">getRange</span>(<span class="num">5</span>,<span class="num">1</span>,<span class="var">total</span>,<span class="num">1</span>).<span class="fn">getValues</span>().<span class="fn">filter</span>(<span class="var">r</span><span class="op">=></span><span class="var">r</span>[<span class="num">0</span>]<span class="op">===</span><span class="kw">true</span>).<span class="var">length</span>;
+  <span class="var">ui</span>.<span class="fn">alert</span>(<span class="var">cls</span><span class="op">+</span><span class="str">'：全'</span><span class="op">+</span><span class="var">total</span><span class="op">+</span><span class="str">'名中　確定済み'</span><span class="op">+</span><span class="var">checked</span><span class="op">+</span><span class="str">'名　未確定'</span><span class="op">+</span>(<span class="var">total</span><span class="op">-</span><span class="var">checked</span>)<span class="op">+</span><span class="str">'名'</span>);
+}
+
+<span class="cm">// ═══════════════════════════════════════════════
+//  ⑤ 申し送り文面を生成【担任】（兄弟複数対応）
+// ═══════════════════════════════════════════════</span>
+<span class="kw">function</span> <span class="fn">generateSiblingMessages</span>() {
+  <span class="kw">const</span> <span class="var">ss</span>     <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getActiveSpreadsheet</span>();
+  <span class="kw">const</span> <span class="var">kakSh</span>  <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_KAKUTEI</span>);
+  <span class="kw">const</span> <span class="var">formSh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_FORM</span>);
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">kakSh</span><span class="op">||</span><span class="op">!</span><span class="var">formSh</span>) { <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(<span class="str">'⚠️ シートが見つかりません。'</span>); <span class="kw">return</span>; }
+
+  <span class="kw">const</span> <span class="var">sibMap</span> <span class="op">=</span> {};
+  <span class="var">formSh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">slice</span>(<span class="num">1</span>).<span class="fn">forEach</span>(<span class="var">r</span><span class="op">=></span>{
+    <span class="kw">const</span> <span class="var">n</span><span class="op">=</span><span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_PARENT</span><span class="op">-</span><span class="num">1</span>]);
+    <span class="kw">if</span>(<span class="var">n</span>) <span class="var">sibMap</span>[<span class="var">n</span>]<span class="op">=</span>{
+      <span class="var">sibClasses</span>: <span class="fn">parseChecks</span>(<span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_SIB</span>  <span class="op">-</span><span class="num">1</span>]),<span class="var">SIB_NONE</span>),
+      <span class="var">ownClass</span>  : <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_CLASS</span><span class="op">-</span><span class="num">1</span>]),
+    };
+  });
+
+  <span class="kw">const</span> <span class="var">byDest</span> <span class="op">=</span> {};
+  <span class="var">kakSh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">slice</span>(<span class="num">1</span>)
+    .<span class="fn">filter</span>(<span class="var">r</span><span class="op">=></span><span class="fn">str</span>(<span class="var">r</span>[<span class="num">2</span>]))
+    .<span class="fn">forEach</span>(<span class="var">r</span><span class="op">=></span>{
+      <span class="kw">const</span> <span class="var">parent</span><span class="op">=</span><span class="fn">str</span>(<span class="var">r</span>[<span class="num">1</span>]); <span class="kw">const</span> <span class="var">info</span><span class="op">=</span><span class="var">sibMap</span>[<span class="var">parent</span>];
+      <span class="kw">if</span>(<span class="op">!</span><span class="var">info</span><span class="op">||</span><span class="var">info</span>.<span class="var">sibClasses</span>.<span class="var">length</span><span class="op">===</span><span class="num">0</span>) <span class="kw">return</span>;
+      <span class="var">info</span>.<span class="var">sibClasses</span>.<span class="fn">forEach</span>(<span class="var">dest</span><span class="op">=></span>{
+        <span class="kw">if</span>(<span class="op">!</span><span class="var">byDest</span>[<span class="var">dest</span>])<span class="var">byDest</span>[<span class="var">dest</span>]<span class="op">=</span>[];
+        <span class="var">byDest</span>[<span class="var">dest</span>].<span class="fn">push</span>({<span class="var">parent</span>,<span class="var">date</span>:<span class="fn">str</span>(<span class="var">r</span>[<span class="num">2</span>]),<span class="var">ownClass</span>:<span class="var">info</span>.<span class="var">ownClass</span>,<span class="var">allSibs</span>:<span class="var">info</span>.<span class="var">sibClasses</span>});
+      });
+    });
+
+  <span class="kw">if</span>(<span class="var">Object</span>.<span class="fn">keys</span>(<span class="var">byDest</span>).<span class="var">length</span><span class="op">===</span><span class="num">0</span>){<span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(<span class="str">'兄弟申告のある確定済み保護者が見つかりません。'</span>);<span class="kw">return</span>;}
+
+  <span class="kw">let</span> <span class="var">sh</span><span class="op">=</span><span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_SIBLING</span>);
+  <span class="kw">if</span>(<span class="var">sh</span>)<span class="var">ss</span>.<span class="fn">deleteSheet</span>(<span class="var">sh</span>);
+  <span class="var">sh</span><span class="op">=</span><span class="var">ss</span>.<span class="fn">insertSheet</span>(<span class="var">SHEET_SIBLING</span>); <span class="var">sh</span>.<span class="fn">setTabColor</span>(<span class="var">COLOR</span>.<span class="var">PURPLE</span>);
+  <span class="kw">const</span> <span class="var">tR</span><span class="op">=</span><span class="var">sh</span>.<span class="fn">getRange</span>(<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">3</span>); <span class="var">tR</span>.<span class="fn">merge</span>().<span class="fn">setValue</span>(<span class="str">'👨‍👩‍👧 申し送り文面【担任用】確定後にチャットへコピペして送信'</span>);
+  <span class="fn">sty</span>(<span class="var">tR</span>,{bg:<span class="var">COLOR</span>.<span class="var">NAVY</span>,fc:<span class="str">'#FFFFFF'</span>,bold:<span class="kw">true</span>,sz:<span class="num">13</span>,ha:<span class="str">'left'</span>}); <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="num">1</span>,<span class="num">40</span>);
+  <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="num">1</span>,<span class="num">170</span>); <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="num">2</span>,<span class="num">460</span>); <span class="var">sh</span>.<span class="fn">setColumnWidth</span>(<span class="num">3</span>,<span class="num">100</span>);
+  <span class="kw">let</span> <span class="var">ri</span><span class="op">=</span><span class="num">2</span>;
+  <span class="var">Object</span>.<span class="fn">entries</span>(<span class="var">byDest</span>).<span class="fn">forEach</span>(([<span class="var">dest</span>,<span class="var">items</span>])<span class="op">=></span>{
+    <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="var">ri</span>,<span class="num">32</span>);
+    <span class="kw">const</span> <span class="var">hR</span><span class="op">=</span><span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">ri</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">3</span>); <span class="var">hR</span>.<span class="fn">merge</span>().<span class="fn">setValue</span>(<span class="str">'📨 送信先：'</span><span class="op">+</span><span class="var">dest</span><span class="op">+</span><span class="str">' 担任の先生'</span>);
+    <span class="fn">sty</span>(<span class="var">hR</span>,{bg:<span class="var">COLOR</span>.<span class="var">PURPLE</span>,fc:<span class="str">'#FFFFFF'</span>,bold:<span class="kw">true</span>,sz:<span class="num">12</span>,ha:<span class="str">'left'</span>}); <span class="var">ri</span><span class="op">++</span>;
+    <span class="var">items</span>.<span class="fn">forEach</span>(<span class="var">item</span><span class="op">=></span>{
+      <span class="kw">const</span> <span class="var">sibStr</span><span class="op">=</span><span class="var">item</span>.<span class="var">allSibs</span>.<span class="fn">join</span>(<span class="str">'・'</span>);
+      <span class="kw">const</span> <span class="var">msg</span><span class="op">=</span><span class="str">'お疲れ様です。'</span><span class="op">+</span><span class="var">item</span>.<span class="var">ownClass</span><span class="op">+</span><span class="str">'担任です。\n'</span>
+        <span class="op">+</span><span class="var">item</span>.<span class="var">parent</span><span class="op">+</span><span class="str">'さんの懇談日時が確定しました。\n'</span>
+        <span class="op">+</span><span class="str">'日時：'</span><span class="op">+</span><span class="var">item</span>.<span class="var">date</span><span class="op">+</span><span class="str">'\n'</span>
+        <span class="op">+</span>(<span class="var">item</span>.<span class="var">allSibs</span>.<span class="var">length</span><span class="op">></span><span class="num">1</span>
+          <span class="op">?</span><span class="str">'兄弟が '</span><span class="op">+</span><span class="var">sibStr</span><span class="op">+</span><span class="str">' にいます（'</span><span class="op">+</span><span class="var">item</span>.<span class="var">allSibs</span>.<span class="var">length</span><span class="op">+</span><span class="str">'クラス）。'</span>
+          <span class="op">:</span><span class="str">'兄弟が '</span><span class="op">+</span><span class="var">dest</span><span class="op">+</span><span class="str">' にいます。'</span>)
+        <span class="op">+</span><span class="str">'\n日程調整にご活用ください。'</span>;
+      <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="var">ri</span>,<span class="num">90</span>);
+      <span class="fn">sty</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">ri</span>,<span class="num">1</span>),{val:<span class="var">item</span>.<span class="var">parent</span><span class="op">+</span><span class="str">' さん\n'</span><span class="op">+</span><span class="var">item</span>.<span class="var">ownClass</span><span class="op">+</span><span class="str">'→'</span><span class="op">+</span><span class="var">dest</span>,bg:<span class="var">COLOR</span>.<span class="var">PURPLE_L</span>,fc:<span class="var">COLOR</span>.<span class="var">PURPLE</span>,bold:<span class="kw">true</span>,sz:<span class="num">11</span>,ha:<span class="str">'left'</span>});
+      <span class="kw">const</span> <span class="var">mc</span><span class="op">=</span><span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">ri</span>,<span class="num">2</span>); <span class="fn">sty</span>(<span class="var">mc</span>,{val:<span class="var">msg</span>,bg:<span class="var">COLOR</span>.<span class="var">WHITE</span>,fc:<span class="var">COLOR</span>.<span class="var">GRAY_TXT</span>,sz:<span class="num">11</span>,ha:<span class="str">'left'</span>});
+      <span class="var">mc</span>.<span class="fn">setWrap</span>(<span class="kw">true</span>).<span class="fn">setVerticalAlignment</span>(<span class="str">'top'</span>);
+      <span class="fn">sty</span>(<span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">ri</span>,<span class="num">3</span>),{val:<span class="str">'← ダブルクリック→全選択→コピー'</span>,bg:<span class="var">COLOR</span>.<span class="var">GRAY_L</span>,fc:<span class="str">'#888'</span>,sz:<span class="num">9</span>,ha:<span class="str">'left'</span>});
+      <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">ri</span>,<span class="num">3</span>).<span class="fn">setWrap</span>(<span class="kw">true</span>).<span class="fn">setVerticalAlignment</span>(<span class="str">'top'</span>); <span class="var">ri</span><span class="op">++</span>;
+    });
+    <span class="var">sh</span>.<span class="fn">setRowHeight</span>(<span class="var">ri</span>,<span class="num">12</span>); <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">ri</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">3</span>).<span class="fn">merge</span>().<span class="fn">setBackground</span>(<span class="var">COLOR</span>.<span class="var">NAVY_L</span>); <span class="var">ri</span><span class="op">++</span>;
+  });
+  <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(<span class="str">'✅ 申し送り文面を生成しました！\n文面セルをダブルクリック→全選択→コピーしてチャットに貼り付けてください。'</span>);
+}
+
+<span class="cm">// ─── ヘルパー関数 ───────────────────────────────</span>
+
+<span class="cm">/** チェックボックス回答（カンマ区切り）を配列に変換
+ *  noneKey（「特になし」等）が含まれる or 空 → []  */</span>
+<span class="kw">function</span> <span class="fn">parseChecks</span>(<span class="var">raw</span>, <span class="var">noneKey</span>) {
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">raw</span> <span class="op">||</span> <span class="var">raw</span>.<span class="fn">includes</span>(<span class="var">noneKey</span>)) <span class="kw">return</span> [];
+  <span class="kw">return</span> <span class="var">raw</span>.<span class="fn">split</span>(<span class="str">','</span>).<span class="fn">map</span>(<span class="var">s</span><span class="op">=></span><span class="var">s</span>.<span class="fn">trim</span>()).<span class="fn">filter</span>(<span class="var">Boolean</span>);
+}
+
+<span class="cm">/** セルスタイル一括適用 */</span>
+<span class="kw">function</span> <span class="fn">sty</span>(<span class="var">r</span>,{<span class="var">val</span>,<span class="var">bg</span>,<span class="var">fc</span>,<span class="var">bold</span><span class="op">=</span><span class="kw">false</span>,<span class="var">sz</span><span class="op">=</span><span class="num">10</span>,<span class="var">ha</span><span class="op">=</span><span class="str">'center'</span>}<span class="op">=</span>{}) {
+  <span class="kw">if</span> (<span class="var">val</span><span class="op">!==</span><span class="kw">undefined</span>) <span class="var">r</span>.<span class="fn">setValue</span>(<span class="var">val</span>);
+  <span class="kw">if</span> (<span class="var">bg</span>) <span class="var">r</span>.<span class="fn">setBackground</span>(<span class="var">bg</span>);
+  <span class="kw">if</span> (<span class="var">fc</span>) <span class="var">r</span>.<span class="fn">setFontColor</span>(<span class="var">fc</span>);
+  <span class="var">r</span>.<span class="fn">setFontWeight</span>(<span class="var">bold</span><span class="op">?</span><span class="str">'bold'</span><span class="op">:</span><span class="str">'normal'</span>).<span class="fn">setFontSize</span>(<span class="var">sz</span>)
    .<span class="fn">setHorizontalAlignment</span>(<span class="var">ha</span>).<span class="fn">setVerticalAlignment</span>(<span class="str">'middle'</span>)
    .<span class="fn">setFontFamily</span>(<span class="str">'メイリオ'</span>);
 }
 
 <span class="cm">/** 文字列変換ヘルパー */</span>
-<span class="kw">function</span> <span class="fn">str</span>(<span class="var">v</span>) { <span class="kw">return</span> (<span class="var">v</span> <span class="op">||</span> <span class="str">''</span>).<span class="fn">toString</span>().<span class="fn">trim</span>(); }
-
-<span class="cm">/** ② 重複チェック */</span>
-<span class="kw">function</span> <span class="fn">checkDuplicate</span>() {
-  <span class="kw">const</span> <span class="var">cal</span>  <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getActiveSpreadsheet</span>().<span class="fn">getSheetByName</span>(<span class="var">SHEET_CAL</span>);
-  <span class="kw">const</span> <span class="var">dups</span> <span class="op">=</span> [];
-  <span class="var">TIME_SLOTS</span>.<span class="fn">forEach</span>((<span class="var">time</span>,<span class="var">ti</span>) <span class="op">=></span>
-    <span class="var">DATES</span>.<span class="fn">forEach</span>((<span class="var">date</span>,<span class="var">di</span>) <span class="op">=></span> {
-      <span class="kw">const</span> <span class="var">v</span> <span class="op">=</span> <span class="var">cal</span>.<span class="fn">getRange</span>(<span class="var">ti</span><span class="op">+</span><span class="num">4</span>,<span class="var">di</span><span class="op">+</span><span class="num">2</span>).<span class="fn">getValue</span>().<span class="fn">toString</span>();
-      <span class="kw">if</span> ((<span class="var">v</span>.<span class="fn">match</span>(<span class="op">/</span>（[◎○△]）<span class="op">/g</span>)<span class="op">||</span>[]).<span class="var">length</span> <span class="op">>=</span> <span class="num">2</span>)
-        <span class="var">dups</span>.<span class="fn">push</span>(<span class="var">date</span><span class="op">+</span><span class="str">' '</span><span class="op">+</span><span class="var">time</span>);
-    })
-  );
-  <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(
-    <span class="var">dups</span>.<span class="var">length</span>
-      <span class="op">?</span> <span class="str">'⚠️ 重複コマ：\n\n'</span><span class="op">+</span><span class="var">dups</span>.<span class="fn">join</span>(<span class="str">'\n'</span>)
-      <span class="op">:</span> <span class="str">'✅ 重複なし！'</span>
-  );
-}
-
-<span class="cm">/** ③ 未確定の保護者を表示 */</span>
-<span class="kw">function</span> <span class="fn">showUndecided</span>() {
-  <span class="kw">const</span> <span class="var">ss</span>      <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getActiveSpreadsheet</span>();
-  <span class="kw">const</span> <span class="var">calText</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_CAL</span>)
-                    .<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">flat</span>().<span class="fn">join</span>(<span class="str">' '</span>);
-  <span class="kw">const</span> <span class="var">rows</span>    <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_FORM</span>)
-                    .<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">slice</span>(<span class="num">1</span>);
-  <span class="kw">const</span> <span class="var">undet</span>   <span class="op">=</span> <span class="var">rows</span>.<span class="fn">map</span>(<span class="var">r</span> <span class="op">=></span> <span class="fn">str</span>(<span class="var">r</span>[<span class="var">COL_PARENT</span><span class="op">-</span><span class="num">1</span>]))
-                       .<span class="fn">filter</span>(<span class="var">n</span> <span class="op">=></span> <span class="var">n</span> <span class="op">&&</span> <span class="op">!</span><span class="var">calText</span>.<span class="fn">includes</span>(<span class="var">n</span>));
-  <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>().<span class="fn">alert</span>(
-    <span class="var">undet</span>.<span class="var">length</span>
-      <span class="op">?</span> <span class="str">'⬜ 未反映の保護者：\n\n'</span><span class="op">+</span><span class="var">undet</span>.<span class="fn">join</span>(<span class="str">'\n'</span>)
-      <span class="op">:</span> <span class="str">'✅ 全員カレンダーに反映済み！'</span>
-  );
-}</code></pre>
-  </div>
-
+<span class="kw">function</span> <span class="fn">str</span>(<span class="var">v</span>) { <span class="kw">return</span> (<span class="var">v</span><span class="op">||</span><span class="str">''</span>).<span class="fn">toString</span>().<span class="fn">trim</span>(); }</code></pre>
   <div class="sec-title">
     <div class="sec-num">③</div>
     <h2>保存・承認・動作確認</h2>
@@ -920,6 +1430,7 @@ pre{
     </div>
   </div>
 
+<div class="back-to-top"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 先頭に戻る</button></div>
 </div><!-- /tab-3 -->
 
 
@@ -933,79 +1444,110 @@ pre{
 
   <div class="card teal">
     <div class="card-ttl">🎯 このSTEPのゴール</div>
-    <p>カレンダー調整表を見ながら全員の日程を確定し、保護者に渡すお手紙を印刷します。</p>
+    <p>各担任がクラスのカレンダータブを開き、🔴赤い保護者から順にチェックボックスで確定します。確定と同時に確定済み一覧へ自動転記されます。全員確定後、お手紙を印刷して配布します。</p>
   </div>
 
   <div class="sec-title">
     <div class="sec-num">①</div>
-    <h2>日程を確定する</h2>
+    <h2>カレンダータブで日程を確定する【担任】</h2>
   </div>
   <div class="steps">
     <div class="step">
       <div class="step-n">1</div>
       <div class="step-body">
-        <h3>カレンダー調整表で重複を解消する</h3>
-        <p>「📋 懇談ツール」→「① カレンダーを自動生成・更新」を実行後、赤くなっているコマを確認します。どちらかの保護者を第二・第三希望のコマに移動します（セルの内容を手で書き換えます）。</p>
-        <div class="step-note tip">兄弟がいる・仕事の都合・前後に別の保護者がいるなど、先生の判断が必要な要素はここで考慮してください。</div>
+        <h3>自クラスのタブを開く</h3>
+        <p>教務主任が「① 全クラスカレンダーを一括生成」を実行したあと、自分のクラス名のタブ（例：<code>3年2組</code>）を開きます。保護者が1名1行で表示されています。</p>
+        <div class="step-note tip">タブは教務主任が全担任と共有します。担任は自分のクラスタブだけ操作してください。</div>
       </div>
     </div>
     <div class="step">
       <div class="step-n">2</div>
       <div class="step-body">
-        <h3>「確定済み一覧」シートに記入する</h3>
-        <p>カレンダーで確定した日程を「確定済み一覧」シートの各列に入力します。</p>
+        <h3>🔴赤い保護者（残り1枠）から優先的に確定する</h3>
+        <p>残り候補枠が少ない保護者ほど上の色（赤→橙→黄）で表示されています。<strong>赤い行から順に確定</strong>することで、後から「入れる枠がない」という事態を防げます。</p>
         <div class="step-note">
-          入力する列：保護者名 ／ お子様の名前 ／ 確定日時 ／ 希望順位（◎○△）<br>
-          「希望順位」列はどの希望で確定できたかを記録しておくと、保護者への説明に役立ちます。
+          色の意味：<br>
+          🔴 赤＝残り1枠（最優先・先に確定）<br>
+          🟠 橙＝残り2〜3枠（早めに確定）<br>
+          🟡 黄＝残り4〜6枠<br>
+          白＝残り7枠以上またはいつでも可
         </div>
       </div>
     </div>
     <div class="step">
       <div class="step-n">3</div>
       <div class="step-body">
-        <h3>「② 重複チェック」で最終確認する</h3>
-        <p>「📋 懇談ツール」→「② 重複チェック」を実行し、重複がないことを確認します。「✅ 重複なし！」と表示されれば完了です。</p>
+        <h3>A列のチェックボックスをオンにする</h3>
+        <p>確定したい保護者の行のA列（左端）のチェックボックスをクリックします。すると確定スロット選択のポップアップが表示されます。</p>
+        <div class="step-note">
+          ポップアップに候補スロットの番号一覧が表示されます。確定したいスロットの番号を入力して「OK」をクリックします。<br>
+          例：「2」と入力 → 2番目のスロットで確定
+        </div>
+        <div class="step-note tip">確定すると：①その保護者の行全体に取消線が入る　②確定済み一覧シートに自動転記される　の2つが同時に行われます。</div>
+        <div class="step-note warn">⚠️ 間違えてチェックした場合はチェックを外すと取消線が解除され、確定済み一覧からも削除されます。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-body">
+        <h3>★マーク（留意点あり）の保護者に配慮する</h3>
+        <p>保護者名に ★ が付いている場合、同じ行の右端「留意点」列に内容が記載されています。スロットを選ぶ前に内容を確認してから確定してください。</p>
+        <div class="step-note">留意点の例：「兄弟の懇談と近い時間帯を希望」「15時以降希望」など。できる範囲で配慮した上で担任が最終判断します。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">5</div>
+      <div class="step-body">
+        <h3>🟣紫枠（兄弟申告あり）の保護者に注目する</h3>
+        <p>B列（保護者名）に紫の左枠線がある保護者は兄弟が他クラスにいます。留意点列に兄弟クラス名が表示されています。確定後に⑤「申し送り文面を生成」で兄弟クラスの担任に連絡します。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">6</div>
+      <div class="step-body">
+        <h3>全員確定後に「③ 未確定の保護者を確認」で漏れをチェックする</h3>
+        <p>メニュー「📋 懇談ツール」→「③ 未確定の保護者を確認」を実行し、クラス名を入力すると確定数・未確定数がポップアップで表示されます。</p>
       </div>
     </div>
   </div>
 
   <div class="sec-title">
     <div class="sec-num">②</div>
-    <h2>お手紙を作成する</h2>
+    <h2>お手紙を作成・印刷する【担任】</h2>
   </div>
   <div class="steps">
     <div class="step">
       <div class="step-n orange">1</div>
       <div class="step-body">
         <h3>Googleドキュメントでテンプレートを作る</h3>
-        <p>Googleドキュメントを新規作成し、以下の内容でテンプレートを作ります。</p>
+        <p>Googleドキュメントを新規作成し、以下の内容でテンプレートを作ります。<code>{{　}}</code> の箇所がデータ差し込み箇所です（PDF一括生成を使う場合）。</p>
         <div class="step-note">
-          <strong>個人懇談のご案内</strong><br><br>
-          〇〇様（お子様：〇〇）<br><br>
+          <div style="text-align:center;font-weight:700;margin-bottom:8px">個人懇談のご案内</div>
+          {{保護者名}} 様（お子様：{{児童名}}）<br><br>
           　平素より本校教育活動にご理解・ご協力をいただきありがとうございます。<br>
-          　下記の日時に個人懇談を実施いたします。ご多忙のところ恐縮ですが、どうぞよろしくお願いいたします。<br><br>
-          　日　時：〇月〇日（〇）　〇〇：〇〇〜〇〇：〇〇<br>
+          　下記の日時に個人懇談を実施いたします。<br><br>
+          　日　時：<strong>{{確定日時}}</strong><br>
           　場　所：〇年〇組　教室<br>
-          　持ち物：特になし<br><br>
-          　　　　　　　　　〇〇小学校　〇年〇組　担任　〇〇　〇〇
+          　持ち物：特になし
         </div>
       </div>
     </div>
     <div class="step">
       <div class="step-n orange">2</div>
       <div class="step-body">
-        <h3>確定済み一覧を見ながら差し替えて印刷する</h3>
-        <p>「確定済み一覧」シートを参照しながら、保護者名・日時の部分を1件ずつ書き換えて印刷します。印刷後は「お手紙」列に「✅ 出力済」と記入します。</p>
-        <div class="step-note tip">保護者数が20名以上の場合は、Googleドキュメントのアドオン「差し込みドキュメント（Mail Merge）」を使うと一括で差し込み印刷できます（無料プランあり）。</div>
+        <h3>確定済み一覧を参照しながら印刷する</h3>
+        <p>「確定済み一覧」シートの保護者名・日時を見ながら、テンプレートの該当箇所を書き換えて印刷します。印刷後は「お手紙」列を「✅ 出力済」に変更します。</p>
+        <div class="step-note tip">保護者数が多い場合はタブ「5 PDF生成」の手順でGASによるPDF一括生成を使うと効率的です。</div>
       </div>
     </div>
   </div>
 
   <div class="notice green-n" style="margin-top:24px">
     <div class="notice-icon">♻️</div>
-    <div><strong>次年度の運用：</strong>GASコードの <code>DATES</code>・<code>TIME_SLOTS</code> を新しい日程に書き換えるだけで使いまわせます。フォームのプルダウン選択肢も同じ日程に揃えれば完成です。</div>
+    <div><strong>次年度の運用：</strong>GASコードの <code>DATES</code>・<code>TIMES</code>・<code>CLASSES</code> を新しい内容に書き換えるだけで使いまわせます。フォームのチェックボックス選択肢も同じ内容に揃えれば完成です。生成AIへの依頼例：「DATESとTIMESを〇月〇日〜に変更して」</div>
   </div>
 
+<div class="back-to-top"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 先頭に戻る</button></div>
 </div><!-- /tab-4 -->
 
 
@@ -1318,6 +1860,7 @@ pre{
     <div><strong>保存先の確認：</strong>Googleドライブのマイドライブを開き、「個人懇談お手紙PDF」フォルダの中に <code>個人懇談お手紙_一括.pdf</code> があれば完成です。このPDFを印刷すると全員分のお手紙が出力されます。</div>
   </div>
 
+<div class="back-to-top"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 先頭に戻る</button></div>
 </div><!-- /tab-5 -->
 
 <!-- ─── TAB 6：FAQ ─────────────────────────────── -->
@@ -1385,6 +1928,7 @@ pre{
     <div>その他ご不明な点は、後藤 壮史（大阪大谷大学 教育学部）までお問い合わせください。</div>
   </div>
 
+<div class="back-to-top"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 先頭に戻る</button></div>
 </div><!-- /tab-6 -->
 
 </div><!-- /content-wrap -->
