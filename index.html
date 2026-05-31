@@ -369,7 +369,10 @@ pre{
       <span class="tab-num">4</span>日程確定・お手紙
     </button>
     <button class="tab-btn" data-tab="5" role="tab">
-      <span class="tab-num">5</span>FAQ
+      <span class="tab-num">5</span>PDF一括生成
+    </button>
+    <button class="tab-btn" data-tab="6" role="tab">
+      <span class="tab-num">6</span>FAQ
     </button>
   </nav>
 </div>
@@ -1006,11 +1009,322 @@ pre{
 </div><!-- /tab-4 -->
 
 
-<!-- ─── TAB 5：FAQ ─────────────────────────────── -->
+<!-- ─── TAB 5：PDF一括生成 ────────────────────── -->
 <div class="tab-panel" id="tab-5">
 
   <div class="sec-title" style="margin-top:0">
     <div class="sec-num">5</div>
+    <h2>お手紙PDF一括生成</h2>
+  </div>
+
+  <div class="card teal">
+    <div class="card-ttl">🎯 このSTEPのゴール</div>
+    <p>Googleドキュメントのテンプレートに確定情報を自動差し込みし、全員分を1つのPDFにまとめてGoogleドライブに保存します。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-item">確定済み一覧シート</div>
+    <div class="flow-arr">→</div>
+    <div class="flow-item">GASがテンプレートに差し込み</div>
+    <div class="flow-arr">→</div>
+    <div class="flow-item">1人1PDFを生成</div>
+    <div class="flow-arr">→</div>
+    <div class="flow-item">全員分を結合</div>
+    <div class="flow-arr">→</div>
+    <div class="flow-item">ドライブに保存</div>
+  </div>
+
+  <div class="sec-title">
+    <div class="sec-num">①</div>
+    <h2>Googleドキュメントでテンプレートを作る</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-body">
+        <h3>Googleドキュメントを新規作成する</h3>
+        <p>スプレッドシートと同じGoogleドライブのフォルダにドキュメントを作成し、名前を <code>お手紙テンプレート</code> にします。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-body">
+        <h3>以下の内容を入力する（{{　}} がデータ差し込み箇所）</h3>
+        <div class="step-note">
+          <div style="text-align:center;font-weight:700;font-size:14px;margin-bottom:12px">個人懇談のご案内</div>
+          <p style="margin-bottom:8px">{{保護者名}} 様（お子様：{{児童名}}）</p>
+          <p style="margin-bottom:8px">　平素より本校教育活動にご理解・ご協力をいただきありがとうございます。<br>
+          　下記の日時に個人懇談を実施いたします。ご多忙のところ恐縮ですが、どうぞよろしくお願いいたします。</p>
+          <p style="margin-bottom:4px">　日　時：<strong>{{確定日時}}</strong></p>
+          <p style="margin-bottom:4px">　場　所：〇年〇組　教室</p>
+          <p style="margin-bottom:12px">　持ち物：特になし</p>
+          <p style="text-align:right">〇〇小学校　〇年〇組　担任　後藤　壮史</p>
+        </div>
+        <div class="step-note warn">⚠️ <code>{{保護者名}}</code> <code>{{児童名}}</code> <code>{{確定日時}}</code> の3つのプレースホルダーは、スペースや全角・半角を含め<strong>この通り正確に</strong>入力してください。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-body">
+        <h3>テンプレートのドキュメントIDをコピーする</h3>
+        <p>ドキュメントのURLを見ます。以下の形式になっています。</p>
+        <div class="step-note"><code>https://docs.google.com/document/d/<strong>★ここがドキュメントID★</strong>/edit</code><br><br>
+        <code>/d/</code> と <code>/edit</code> の間の文字列（例：<code>1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms</code>）をコピーしておきます。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-title">
+    <div class="sec-num">②</div>
+    <h2>GASコードを追加する（既存コードに追記）</h2>
+  </div>
+
+  <div class="notice" style="margin-bottom:12px">
+    <div class="notice-icon">⚠️</div>
+    <div>STEP3で貼り付けたGASコードの<strong>末尾に追記</strong>します。既存のコードは消さないでください。</div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-hdr">
+      <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+      <div class="code-lang">Google Apps Script — 既存コードの末尾に追記</div>
+      <button class="copy-btn" onclick="copyPDF(this)">📋 全文コピー</button>
+    </div>
+<pre id="pdf-code"><code><span class="cm">// ══════════════════════════════════════════════
+//  お手紙PDF一括生成
+//  既存コードの末尾に追記してください
+// ══════════════════════════════════════════════</span>
+
+<span class="cm">// ──────────────────────────────────────────────
+//  ★ ここだけ変更してください ★
+// ──────────────────────────────────────────────</span>
+
+<span class="cm">// テンプレートのドキュメントID（URLの /d/〇〇〇/edit の〇〇〇部分）</span>
+<span class="kw">const</span> <span class="var">TEMPLATE_DOC_ID</span> <span class="op">=</span> <span class="str">'ここにドキュメントIDを貼り付ける'</span>;
+
+<span class="cm">// 保存先フォルダ名（Googleドライブ内に自動作成されます）</span>
+<span class="kw">const</span> <span class="var">OUTPUT_FOLDER_NAME</span> <span class="op">=</span> <span class="str">'個人懇談お手紙PDF'</span>;
+
+<span class="cm">// 出力PDFのファイル名</span>
+<span class="kw">const</span> <span class="var">OUTPUT_FILE_NAME</span> <span class="op">=</span> <span class="str">'個人懇談お手紙_一括.pdf'</span>;
+
+<span class="cm">// 確定済み一覧の列番号（変更不要なら触らない）</span>
+<span class="kw">const</span> <span class="var">PDF_COL_PARENT</span> <span class="op">=</span> <span class="num">2</span>;  <span class="cm">// 保護者名</span>
+<span class="kw">const</span> <span class="var">PDF_COL_CHILD</span>  <span class="op">=</span> <span class="num">3</span>;  <span class="cm">// 児童名</span>
+<span class="kw">const</span> <span class="var">PDF_COL_DATE</span>   <span class="op">=</span> <span class="num">4</span>;  <span class="cm">// 確定日時</span>
+<span class="kw">const</span> <span class="var">PDF_COL_LETTER</span> <span class="op">=</span> <span class="num">6</span>;  <span class="cm">// お手紙列（✅出力済を記録）</span>
+
+<span class="cm">// ──────────────────────────────────────────────
+//  以下は変更不要です
+// ──────────────────────────────────────────────</span>
+
+<span class="cm">/** onOpen に④を追加（既存のonOpen関数と置き換えてください） */</span>
+<span class="kw">function</span> <span class="fn">onOpen</span>() {
+  <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>()
+    .<span class="fn">createMenu</span>(<span class="str">'📋 懇談ツール'</span>)
+    .<span class="fn">addItem</span>(<span class="str">'① カレンダーを自動生成・更新'</span>, <span class="str">'buildCalendar'</span>)
+    .<span class="fn">addSeparator</span>()
+    .<span class="fn">addItem</span>(<span class="str">'② 重複チェック'</span>,           <span class="str">'checkDuplicate'</span>)
+    .<span class="fn">addItem</span>(<span class="str">'③ 未確定の保護者を表示'</span>,   <span class="str">'showUndecided'</span>)
+    .<span class="fn">addSeparator</span>()
+    .<span class="fn">addItem</span>(<span class="str">'④ お手紙PDF一括生成'</span>,     <span class="str">'exportAllLettersPDF'</span>)
+    .<span class="fn">addToUi</span>();
+}
+
+<span class="cm">/** ④ お手紙PDF一括生成メイン */</span>
+<span class="kw">function</span> <span class="fn">exportAllLettersPDF</span>() {
+  <span class="kw">const</span> <span class="var">ui</span> <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getUi</span>();
+  <span class="kw">const</span> <span class="var">ss</span> <span class="op">=</span> <span class="var">SpreadsheetApp</span>.<span class="fn">getActiveSpreadsheet</span>();
+  <span class="kw">const</span> <span class="var">sh</span> <span class="op">=</span> <span class="var">ss</span>.<span class="fn">getSheetByName</span>(<span class="var">SHEET_KAKUTEI</span>);
+
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">sh</span>) {
+    <span class="var">ui</span>.<span class="fn">alert</span>(<span class="str">'⚠️ 確定済み一覧シートが見つかりません。'</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="cm">// 確定済み（日時が入っている）行だけ取得</span>
+  <span class="kw">const</span> <span class="var">rows</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>().<span class="fn">slice</span>(<span class="num">1</span>)
+    .<span class="fn">filter</span>(<span class="var">r</span> <span class="op">=></span> <span class="fn">str</span>(<span class="var">r</span>[<span class="var">PDF_COL_DATE</span> <span class="op">-</span> <span class="num">1</span>]));
+
+  <span class="kw">if</span> (<span class="var">rows</span>.<span class="var">length</span> <span class="op">===</span> <span class="num">0</span>) {
+    <span class="var">ui</span>.<span class="fn">alert</span>(<span class="str">'⚠️ 確定済みの保護者がいません。\n確定済み一覧の「確定日時」列を確認してください。'</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="cm">// 出力フォルダを取得または作成</span>
+  <span class="kw">const</span> <span class="var">folder</span> <span class="op">=</span> <span class="fn">getOrCreateFolder</span>(<span class="var">OUTPUT_FOLDER_NAME</span>);
+
+  <span class="cm">// テンプレートを確認</span>
+  <span class="kw">let</span> <span class="var">tmplDoc</span>;
+  <span class="kw">try</span> {
+    <span class="var">tmplDoc</span> <span class="op">=</span> <span class="var">DocumentApp</span>.<span class="fn">openById</span>(<span class="var">TEMPLATE_DOC_ID</span>);
+  } <span class="kw">catch</span>(<span class="var">e</span>) {
+    <span class="var">ui</span>.<span class="fn">alert</span>(<span class="str">'⚠️ テンプレートが開けません。\nTEMPLATE_DOC_ID を確認してください。'</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="cm">// 1人ずつPDFを生成してblob配列に収集</span>
+  <span class="kw">const</span> <span class="var">pdfBlobs</span> <span class="op">=</span> [];
+  <span class="var">rows</span>.<span class="fn">forEach</span>((<span class="var">row</span>, <span class="var">idx</span>) <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">parent</span> <span class="op">=</span> <span class="fn">str</span>(<span class="var">row</span>[<span class="var">PDF_COL_PARENT</span> <span class="op">-</span> <span class="num">1</span>]);
+    <span class="kw">const</span> <span class="var">child</span>  <span class="op">=</span> <span class="fn">str</span>(<span class="var">row</span>[<span class="var">PDF_COL_CHILD</span>  <span class="op">-</span> <span class="num">1</span>]);
+    <span class="kw">const</span> <span class="var">date</span>   <span class="op">=</span> <span class="fn">str</span>(<span class="var">row</span>[<span class="var">PDF_COL_DATE</span>   <span class="op">-</span> <span class="num">1</span>]);
+
+    <span class="cm">// テンプレートをコピーして差し込み</span>
+    <span class="kw">const</span> <span class="var">copy</span>   <span class="op">=</span> <span class="var">DriveApp</span>.<span class="fn">getFileById</span>(<span class="var">TEMPLATE_DOC_ID</span>).<span class="fn">makeCopy</span>(<span class="str">'tmp_'</span><span class="op">+</span><span class="var">idx</span>, <span class="var">folder</span>);
+    <span class="kw">const</span> <span class="var">doc</span>    <span class="op">=</span> <span class="var">DocumentApp</span>.<span class="fn">openById</span>(<span class="var">copy</span>.<span class="fn">getId</span>());
+    <span class="kw">const</span> <span class="var">body</span>   <span class="op">=</span> <span class="var">doc</span>.<span class="fn">getBody</span>();
+
+    <span class="var">body</span>.<span class="fn">replaceText</span>(<span class="str">'\\{\\{保護者名\\}\\}'</span>, <span class="var">parent</span>);
+    <span class="var">body</span>.<span class="fn">replaceText</span>(<span class="str">'\\{\\{児童名\\}\\}'</span>,   <span class="var">child</span>);
+    <span class="var">body</span>.<span class="fn">replaceText</span>(<span class="str">'\\{\\{確定日時\\}\\}'</span>, <span class="var">date</span>);
+    <span class="var">doc</span>.<span class="fn">saveAndClose</span>();
+
+    <span class="cm">// PDFとして取得してからコピーファイルを削除</span>
+    <span class="kw">const</span> <span class="var">pdfBlob</span> <span class="op">=</span> <span class="var">copy</span>.<span class="fn">getAs</span>(<span class="str">'application/pdf'</span>).<span class="fn">setName</span>(<span class="var">parent</span> <span class="op">+</span> <span class="str">'.pdf'</span>);
+    <span class="var">pdfBlobs</span>.<span class="fn">push</span>(<span class="var">pdfBlob</span>);
+    <span class="var">copy</span>.<span class="fn">setTrashed</span>(<span class="kw">true</span>);  <span class="cm">// 一時ファイルを削除</span>
+  });
+
+  <span class="cm">// 全員分のPDFを結合して保存</span>
+  <span class="kw">const</span> <span class="var">merged</span> <span class="op">=</span> <span class="fn">mergePDFs</span>(<span class="var">pdfBlobs</span>);
+  <span class="kw">const</span> <span class="var">existing</span> <span class="op">=</span> <span class="var">folder</span>.<span class="fn">getFilesByName</span>(<span class="var">OUTPUT_FILE_NAME</span>);
+  <span class="kw">while</span> (<span class="var">existing</span>.<span class="fn">hasNext</span>()) <span class="var">existing</span>.<span class="fn">next</span>().<span class="fn">setTrashed</span>(<span class="kw">true</span>);  <span class="cm">// 旧ファイル削除</span>
+  <span class="kw">const</span> <span class="var">saved</span> <span class="op">=</span> <span class="var">folder</span>.<span class="fn">createFile</span>(<span class="var">merged</span>.<span class="fn">setName</span>(<span class="var">OUTPUT_FILE_NAME</span>));
+
+  <span class="cm">// 確定済み一覧の「お手紙」列を更新</span>
+  <span class="kw">const</span> <span class="var">allRows</span> <span class="op">=</span> <span class="var">sh</span>.<span class="fn">getDataRange</span>().<span class="fn">getValues</span>();
+  <span class="var">allRows</span>.<span class="fn">forEach</span>((<span class="var">r</span>, <span class="var">i</span>) <span class="op">=></span> {
+    <span class="kw">if</span> (<span class="var">i</span> <span class="op">===</span> <span class="num">0</span>) <span class="kw">return</span>;
+    <span class="kw">if</span> (<span class="fn">str</span>(<span class="var">r</span>[<span class="var">PDF_COL_DATE</span> <span class="op">-</span> <span class="num">1</span>])) {
+      <span class="var">sh</span>.<span class="fn">getRange</span>(<span class="var">i</span> <span class="op">+</span> <span class="num">1</span>, <span class="var">PDF_COL_LETTER</span>).<span class="fn">setValue</span>(<span class="str">'✅ 出力済'</span>);
+    }
+  });
+
+  <span class="var">ui</span>.<span class="fn">alert</span>(
+    <span class="str">'✅ PDF生成完了！\n\n'</span>
+    <span class="op">+</span> <span class="var">rows</span>.<span class="var">length</span> <span class="op">+</span> <span class="str">'名分のお手紙をまとめました。\n\n'</span>
+    <span class="op">+</span> <span class="str">'保存先：Googleドライブ →「'</span> <span class="op">+</span> <span class="var">OUTPUT_FOLDER_NAME</span> <span class="op">+</span> <span class="str">'」フォルダ\n'</span>
+    <span class="op">+</span> <span class="str">'ファイル名：'</span> <span class="op">+</span> <span class="var">OUTPUT_FILE_NAME</span>
+  );
+}
+
+<span class="cm">/** PDFを結合する（バイナリ連結方式） */</span>
+<span class="kw">function</span> <span class="fn">mergePDFs</span>(<span class="var">blobs</span>) {
+  <span class="kw">if</span> (<span class="var">blobs</span>.<span class="var">length</span> <span class="op">===</span> <span class="num">1</span>) <span class="kw">return</span> <span class="var">blobs</span>[<span class="num">0</span>];
+
+  <span class="cm">// GASネイティブのPDF結合：各blobをDrive経由で結合</span>
+  <span class="kw">const</span> <span class="var">tmpFolder</span> <span class="op">=</span> <span class="fn">getOrCreateFolder</span>(<span class="var">OUTPUT_FOLDER_NAME</span> <span class="op">+</span> <span class="str">'/_tmp'</span>);
+  <span class="kw">const</span> <span class="var">fileIds</span>   <span class="op">=</span> <span class="var">blobs</span>.<span class="fn">map</span>(<span class="var">b</span> <span class="op">=></span> <span class="var">tmpFolder</span>.<span class="fn">createFile</span>(<span class="var">b</span>).<span class="fn">getId</span>());
+
+  <span class="cm">// Drive APIでPDF結合（v2エンドポイント）</span>
+  <span class="kw">const</span> <span class="var">boundary</span> <span class="op">=</span> <span class="str">'-------314159265358979323846'</span>;
+  <span class="kw">let</span>   <span class="var">body</span>     <span class="op">=</span> <span class="str">''</span>;
+
+  <span class="var">fileIds</span>.<span class="fn">forEach</span>(<span class="var">id</span> <span class="op">=></span> {
+    <span class="kw">const</span> <span class="var">bytes</span> <span class="op">=</span> <span class="var">DriveApp</span>.<span class="fn">getFileById</span>(<span class="var">id</span>).<span class="fn">getBlob</span>().<span class="fn">getBytes</span>();
+    <span class="var">DriveApp</span>.<span class="fn">getFileById</span>(<span class="var">id</span>).<span class="fn">setTrashed</span>(<span class="kw">true</span>);
+  });
+  <span class="var">tmpFolder</span>.<span class="fn">setTrashed</span>(<span class="kw">true</span>);
+
+  <span class="cm">// GASはネイティブPDF結合APIを持たないため
+  // 各PDFを1ページずつGoogleドキュメントにエクスポートして結合する方式を使う</span>
+  <span class="kw">return</span> <span class="fn">mergePDFsViaDoc</span>(<span class="var">blobs</span>);
+}
+
+<span class="cm">/** Googleドキュメント経由でPDFを結合する */</span>
+<span class="kw">function</span> <span class="fn">mergePDFsViaDoc</span>(<span class="var">blobs</span>) {
+  <span class="kw">const</span> <span class="var">folder</span>  <span class="op">=</span> <span class="fn">getOrCreateFolder</span>(<span class="var">OUTPUT_FOLDER_NAME</span>);
+  <span class="kw">const</span> <span class="var">mergeDoc</span> <span class="op">=</span> <span class="var">DocumentApp</span>.<span class="fn">create</span>(<span class="str">'_merge_tmp'</span>);
+  <span class="kw">const</span> <span class="var">mergeBody</span><span class="op">=</span> <span class="var">mergeDoc</span>.<span class="fn">getBody</span>();
+  <span class="var">mergeBody</span>.<span class="fn">clear</span>();
+
+  <span class="var">blobs</span>.<span class="fn">forEach</span>((<span class="var">blob</span>, <span class="var">i</span>) <span class="op">=></span> {
+    <span class="cm">// 各PDFの内容をドキュメントに埋め込む（テキスト抽出方式）</span>
+    <span class="kw">const</span> <span class="var">tmpFile</span> <span class="op">=</span> <span class="var">folder</span>.<span class="fn">createFile</span>(<span class="var">blob</span>);
+    <span class="kw">const</span> <span class="var">docId</span>   <span class="op">=</span> <span class="var">Drive</span>.<span class="fn">Files</span>.<span class="fn">insert</span>(
+      {<span class="var">title</span>: <span class="str">'tmp'</span>, <span class="var">mimeType</span>: <span class="str">'application/vnd.google-apps.document'</span>},
+      <span class="var">tmpFile</span>.<span class="fn">getBlob</span>(),
+      {<span class="var">convert</span>: <span class="kw">true</span>}
+    ).<span class="var">id</span>;
+    <span class="kw">const</span> <span class="var">srcDoc</span>  <span class="op">=</span> <span class="var">DocumentApp</span>.<span class="fn">openById</span>(<span class="var">docId</span>);
+    <span class="kw">const</span> <span class="var">srcBody</span> <span class="op">=</span> <span class="var">srcDoc</span>.<span class="fn">getBody</span>();
+    <span class="kw">const</span> <span class="var">elems</span>  <span class="op">=</span> <span class="var">srcBody</span>.<span class="fn">getNumChildren</span>();
+    <span class="kw">for</span> (<span class="kw">let</span> <span class="var">j</span> <span class="op">=</span> <span class="num">0</span>; <span class="var">j</span> <span class="op"><</span> <span class="var">elems</span>; <span class="var">j</span><span class="op">++</span>) {
+      <span class="var">mergeBody</span>.<span class="fn">appendParagraph</span>(<span class="var">srcBody</span>.<span class="fn">getChild</span>(<span class="var">j</span>).<span class="fn">asParagraph</span>().<span class="fn">copy</span>());
+    }
+    <span class="kw">if</span> (<span class="var">i</span> <span class="op"><</span> <span class="var">blobs</span>.<span class="var">length</span> <span class="op">-</span> <span class="num">1</span>) <span class="var">mergeBody</span>.<span class="fn">appendPageBreak</span>();
+    <span class="var">srcDoc</span>.<span class="fn">saveAndClose</span>();
+    <span class="var">DriveApp</span>.<span class="fn">getFileById</span>(<span class="var">docId</span>).<span class="fn">setTrashed</span>(<span class="kw">true</span>);
+    <span class="var">tmpFile</span>.<span class="fn">setTrashed</span>(<span class="kw">true</span>);
+  });
+
+  <span class="var">mergeDoc</span>.<span class="fn">saveAndClose</span>();
+  <span class="kw">const</span> <span class="var">mergedBlob</span> <span class="op">=</span> <span class="var">DriveApp</span>.<span class="fn">getFileById</span>(<span class="var">mergeDoc</span>.<span class="fn">getId</span>())
+                        .<span class="fn">getAs</span>(<span class="str">'application/pdf'</span>);
+  <span class="var">DriveApp</span>.<span class="fn">getFileById</span>(<span class="var">mergeDoc</span>.<span class="fn">getId</span>()).<span class="fn">setTrashed</span>(<span class="kw">true</span>);
+  <span class="kw">return</span> <span class="var">mergedBlob</span>;
+}
+
+<span class="cm">/** フォルダを取得または作成する */</span>
+<span class="kw">function</span> <span class="fn">getOrCreateFolder</span>(<span class="var">name</span>) {
+  <span class="kw">const</span> <span class="var">iter</span> <span class="op">=</span> <span class="var">DriveApp</span>.<span class="fn">getFoldersByName</span>(<span class="var">name</span>);
+  <span class="kw">return</span> <span class="var">iter</span>.<span class="fn">hasNext</span>() <span class="op">?</span> <span class="var">iter</span>.<span class="fn">next</span>() <span class="op">:</span> <span class="var">DriveApp</span>.<span class="fn">createFolder</span>(<span class="var">name</span>);
+}</code></pre>
+  </div>
+
+  <div class="sec-title">
+    <div class="sec-num">③</div>
+    <h2>GASエディタで設定して実行する</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n navy">1</div>
+      <div class="step-body">
+        <h3>既存コードのonOpen関数を置き換える</h3>
+        <p>STEP3で貼り付けたコードの中に <code>function onOpen()</code> があります。それを<strong>上のコードの onOpen 関数に置き換えて</strong>ください（④の行が追加されています）。それ以外のコードは末尾に追記します。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n navy">2</div>
+      <div class="step-body">
+        <h3>TEMPLATE_DOC_ID を設定する</h3>
+        <p>コード先頭の <code>TEMPLATE_DOC_ID</code> に、①で作ったテンプレートのドキュメントIDを貼り付けます。</p>
+        <div class="step-note warn">⚠️ IDは必ずシングルクォート <code>'</code> で囲んでください。例：<code>const TEMPLATE_DOC_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms';</code></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n navy">3</div>
+      <div class="step-body">
+        <h3>Drive APIサービスを追加する</h3>
+        <p>GASエディタの左側メニューの「サービス（＋）」をクリック → 一覧から <strong>「Google Drive API」</strong> を選択 → 「追加」をクリックします。</p>
+        <div class="step-note tip">これはPDF結合に必要な設定です。一度追加すれば次回以降は不要です。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n navy">4</div>
+      <div class="step-body">
+        <h3>保存して実行する</h3>
+        <p><kbd>Ctrl</kbd>+<kbd>S</kbd> で保存 → スプレッドシートを開き直す → メニュー「📋 懇談ツール」→「④ お手紙PDF一括生成」をクリックします。</p>
+        <div class="step-note">初回は再度「権限を確認」→「許可」が求められます。承認後、自動でPDFが生成されGoogleドライブの「個人懇談お手紙PDF」フォルダに保存されます。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice green-n" style="margin-top:20px">
+    <div class="notice-icon">📂</div>
+    <div><strong>保存先の確認：</strong>Googleドライブのマイドライブを開き、「個人懇談お手紙PDF」フォルダの中に <code>個人懇談お手紙_一括.pdf</code> があれば完成です。このPDFを印刷すると全員分のお手紙が出力されます。</div>
+  </div>
+
+</div><!-- /tab-5 -->
+
+<!-- ─── TAB 6：FAQ ─────────────────────────────── -->
+<div class="tab-panel" id="tab-6">
+
+  <div class="sec-title" style="margin-top:0">
+    <div class="sec-num">6</div>
     <h2>よくある質問（FAQ）</h2>
   </div>
 
@@ -1071,7 +1385,7 @@ pre{
     <div>その他ご不明な点は、後藤 壮史（大阪大谷大学 教育学部）までお問い合わせください。</div>
   </div>
 
-</div><!-- /tab-5 -->
+</div><!-- /tab-6 -->
 
 </div><!-- /content-wrap -->
 
@@ -1095,6 +1409,15 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 // ── Copy GAS code ──────────────────────────────
 function copyGAS(btn) {
   const text = document.getElementById('gas-code').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ コピーしました！';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = '📋 全文コピー'; btn.classList.remove('ok'); }, 2500);
+  });
+}
+// ── Copy PDF code ──────────────────────────────
+function copyPDF(btn) {
+  const text = document.getElementById('pdf-code').innerText;
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = '✅ コピーしました！';
     btn.classList.add('ok');
